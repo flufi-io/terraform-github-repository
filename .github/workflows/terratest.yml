@@ -2,8 +2,13 @@ name: terratest
 on:
   - pull_request
 permissions:
-  contents: read
+  actions: read
+  checks: write
+  contents: write
+  id-token: read
+  pull-requests: write
   repository-projects: write
+
 jobs:
   terratest:
     runs-on: ubuntu-latest
