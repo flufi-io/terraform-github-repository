@@ -1,4 +1,6 @@
-visibility = "public"
+name        = "testing-template-repository-jkshdbjk"
+visibility  = "public"
+description = "testing template repository"
 template_files = [
   "../../.config/.terraform-docs.yml",
 

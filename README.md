@@ -21,7 +21,7 @@ module "repository" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | >=4.25.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | 4.25.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
