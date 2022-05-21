@@ -16,6 +16,8 @@ jobs:
           go-version: '>=1.17.0'
       - name: run terratest
         working-directory: main/tests
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           export GOOS=linux GOARCH=amd64 CGO_ENABLED=0
           go mod init test
