@@ -4,7 +4,5 @@ rm -rf go.*
 export GOOS=linux GOARCH=amd64 CGO_ENABLED=0
 go mod init test
 go mod tidy >> /dev/null
-echo $GITHUB_TOKEN
-echo "token" >&1
-#$GITHUB_TOKEN go test -count=1 -timeout 120m -v ./...
+go test -count=1 -timeout 120m -v ./...
 exit $1
