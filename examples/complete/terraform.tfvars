@@ -4,7 +4,6 @@ description = "testing template repository"
 template_files = [
   "../../.config/.terraform-docs.yml",
 
-  "../../.github/workflows/terraform-docs.yml",
   "../../.github/workflows/terratest.yml",
   "../../.github/workflows/tfsec.yml",
 
