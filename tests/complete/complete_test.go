@@ -17,7 +17,6 @@ func TestCompleteExample(t *testing.T) {
 	templateFiles := []string{
 		"../../.config/.terraform-docs.yml",
 
-		"../../.github/workflows/terratest.yml",
 		"../../.github/workflows/tfsec.yml",
 
 		"../../.gitignore",
