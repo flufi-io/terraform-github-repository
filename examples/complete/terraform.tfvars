@@ -5,7 +5,7 @@ template_files = [
   "../../.config/.terraform-docs.yml",
 
   "../../.github/workflows/tfsec.yml",
-
+  "../../.github/workflows/terrascan.yml",
   "../../.gitignore",
   "../../main.tf",
   "../../variables.tf",
