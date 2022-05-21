@@ -1,4 +1,4 @@
-name: tfsec-pr-commenter
+name: tfsec
 on:
   pull_request:
 jobs:

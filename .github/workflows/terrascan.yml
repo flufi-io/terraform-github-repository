@@ -2,7 +2,7 @@ name: terrascan
 on: [push]
 
 jobs:
-  terrascan_job:
+  terrascan:
     runs-on: ubuntu-latest
     name: terrascan-action
     steps:

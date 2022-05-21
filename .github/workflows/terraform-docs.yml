@@ -1,9 +1,9 @@
-name: Generate terraform docs
+name: terraform-docs
 on:
   - pull_request
 
 jobs:
-  docs:
+  terraform-docs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout

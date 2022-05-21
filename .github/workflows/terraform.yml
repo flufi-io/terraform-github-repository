@@ -3,15 +3,17 @@ on:
   - pull_request
 
 jobs:
-  defaults:
-    run:
-      working-directory: ${{ env.tf_actions_working_dir }}
   terraform-validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: main/examples/complete/
     steps:
       - name: checkout
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
+          path: main
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.0
