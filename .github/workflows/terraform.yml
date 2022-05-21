@@ -29,7 +29,7 @@ jobs:
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate  -var-file=terraform.tfvars -no-color
+        run: terraform validate -no-color
         working-directory: main/examples/complete/
 
       - name: Terraform Plan
