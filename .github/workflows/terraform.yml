@@ -29,11 +29,13 @@ jobs:
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate  -var-file=../../examples/complete/terraform.tfvars -no-color
+        run: terraform validate  -var-file=terraform.tfvars -no-color
+        working-directory: main/examples/complete/
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan  -var-file=../../examples/complete/terraform.tfvars -no-color
+        run: terraform plan  -var-file=terraform.tfvars -no-color
+        working-directory: main/examples/complete/
         continue-on-error: true
 
       - uses: actions/github-script@v6
