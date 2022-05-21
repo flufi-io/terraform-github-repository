@@ -1,11 +1,11 @@
-visibility = "public"
+name        = "testing-template-repository-jkshdbjk"
+visibility  = "public"
+description = "testing template repository"
 template_files = [
   "../../.config/.terraform-docs.yml",
 
-  "../../.github/workflows/terraform-docs.yml",
-  "../../.github/workflows/terratest.yml",
   "../../.github/workflows/tfsec.yml",
-
+  "../../.github/workflows/terrascan.yml",
   "../../.gitignore",
   "../../main.tf",
   "../../variables.tf",
