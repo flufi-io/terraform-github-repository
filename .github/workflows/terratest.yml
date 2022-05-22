@@ -30,7 +30,7 @@ jobs:
       - name: run terratest
         working-directory: main/tests
         env:
-          GITHUB_TOKEN: ${{ secrets.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           export GOOS=linux GOARCH=amd64 CGO_ENABLED=0
           go mod init test
