@@ -2,27 +2,27 @@ name        = "testing-template-repository-jkshdbjk"
 visibility  = "public"
 description = "testing template repository"
 template_files = [
-  "../../.config/.terraform-docs.yml",
+  ".config/.terraform-docs.yml",
 
-  "../../.github/workflows/tfsec.yml",
-  "../../.github/workflows/terrascan.yml",
-  "../../.gitignore",
-  "../../main.tf",
-  "../../variables.tf",
-  "../../versions.tf",
-  "../../outputs.tf",
-  "../../README.md",
+  ".github/workflows/tfsec.yml",
+  ".github/workflows/terrascan.yml",
+  ".gitignore",
+  "main.tf",
+  "variables.tf",
+  "versions.tf",
+  "outputs.tf",
+  "README.md",
 
-  "../../examples/complete/main.tf",
-  "../../examples/complete/variables.tf",
-  "../../examples/complete/versions.tf",
-  "../../examples/complete/outputs.tf",
-  "../../examples/complete/terraform.tfvars",
-  "../../examples/complete/providers.tf",
+  "examples/complete/main.tf",
+  "examples/complete/variables.tf",
+  "examples/complete/versions.tf",
+  "examples/complete/outputs.tf",
+  "examples/complete/terraform.tfvars",
+  "examples/complete/providers.tf",
 
-  "../../tests/complete/complete_test.go",
+  "tests/complete/complete_test.go",
 ]
-template_files_prefix = "../../"
+template_files_prefix = "../.."
 
 restrictions = {
   teams = ["@flufi-io/devops-engineers"]

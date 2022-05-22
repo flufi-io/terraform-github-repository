@@ -67,8 +67,8 @@ resource "github_repository_file" "template_files" {
   for_each            = length(var.template_files) == 0 ? toset([]) : toset(var.template_files)
   repository          = github_repository.repo.name
   branch              = github_branch.template_files[0].branch
-  file                = trimprefix(each.value, var.template_files_prefix)
-  content             = file(each.value)
+  file                = each.value
+  content             = file("${var.template_files_prefix}/${each.value}")
   commit_message      = "Managed by Terraform"
   overwrite_on_create = true
 }
