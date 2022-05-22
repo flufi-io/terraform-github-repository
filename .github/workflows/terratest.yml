@@ -4,6 +4,7 @@ on:
 
 permissions:
   id-token: write
+  actions: write
   contents: write
   pull-requests: write
   repository-projects: write
@@ -34,5 +35,5 @@ jobs:
         run: |
           export GOOS=linux GOARCH=amd64 CGO_ENABLED=0
           go mod init test
-          go mod tidy > /dev/null
+          go mod tidy 2>&1
           go test -v -count=1 -timeout 120m ./...
