@@ -88,3 +88,10 @@ resource "github_repository_pull_request" "template_files" {
   title           = "Added Template Files"
   body            = "Merge this PR"
 }
+
+resource "github_actions_secret" "example_secret" {
+  for_each        = var.secrets
+  repository      = github_repository.repo.name
+  secret_name     = each.key
+  encrypted_value = each.value["encrypted_value"]
+}

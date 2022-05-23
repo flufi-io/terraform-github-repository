@@ -46,3 +46,8 @@ variable "restrictions" {
   })
   description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
 }
+
+variable "secrets" {
+  default = {}
+  type    = map(string)
+}
