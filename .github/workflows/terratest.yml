@@ -2,9 +2,8 @@ name: terratest
 on:
   - pull_request
 
-permissions:
-  id-token: write
-  contents: read
+permissions: write-all
+
 jobs:
   terratest:
     runs-on: ubuntu-latest
