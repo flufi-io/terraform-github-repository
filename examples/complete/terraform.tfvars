@@ -37,3 +37,7 @@ required_pull_request_reviews = {
   required_approving_review_count = 1
 }
 status_checks_contexts = ["terratest"]
+
+secrets = {
+  new_secret = "arandomsecret"
+}
