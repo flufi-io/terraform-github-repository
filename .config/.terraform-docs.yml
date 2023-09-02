@@ -1,3 +1,5 @@
+---
+# terraform-docs configuration
 formatter: markdown table
 
 version: ""
@@ -17,11 +19,12 @@ sections:
     - modules
     - outputs
 
-#content: ""
+# content: ""
 content: |-
   # Examples
   ```hcl
-  {{ include "examples/complete/README.md" }}
+  {{ include "examples/complete/main.tf" }}
+  {{ include "examples/complete/example.tfvars" }}
   ```
   {{ .Header }}
   {{ .Providers }}
