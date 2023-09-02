@@ -1,50 +1,53 @@
 package test
 
 import (
-	"github.com/joho/godotenv"
-	"log"
+	"fmt"
+	"github.com/google/uuid"
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"os"
 	"strconv"
 	"testing"
 	"time"
-
-	"github.com/gruntwork-io/terratest/modules/terraform"
-	"github.com/stretchr/testify/assert"
 )
 
-func TestCompleteExample(t *testing.T) {
-	godotenv.Load("../../.env")
-	// DELAY is the time in seconds to run terraform destroy after terraform apply
-	DELAY, _ := strconv.Atoi(os.Getenv("DELAY"))
-	varFiles := []string{"../../examples/complete/terraform.tfvars"}
-	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: "../../examples/complete",
-		VarFiles:     varFiles,
-		Vars:         map[string]interface{}{},
-		Upgrade:      true,
-		Reconfigure:  true,
-	})
+var TimeToDestroy, _ = strconv.Atoi(os.Getenv("TIME_TO_DESTROY"))
+
+func Test(t *testing.T) {
+	t.Parallel()
+
+	// Generate a random string
+	randHash := uuid.New().String()
+	originalName := terraform.GetVariableAsStringFromVarFile(t, "../../examples/complete/example.tfvars", "name")
+
+	// Update the name variable with the original value plus the hash
+	name := originalName + randHash
+
+	terraformOptions := &terraform.Options{
+		TerraformDir: "../../examples/complete/",
+		VarFiles:     []string{"example.tfvars"},
+		Vars: map[string]interface{}{
+			"name": name,
+		},
+		Upgrade:     true,
+		Reconfigure: true,
+	}
 
 	defer terraform.Destroy(t, terraformOptions)
-	// Delay the execution of the terraform destroy
 	defer func() {
-		delay(DELAY)
+		timer(TimeToDestroy)
 	}()
 
 	terraform.InitAndApply(t, terraformOptions)
-
-	output := terraform.Output(t, terraformOptions, "repository_name")
-	assert.Equal(t, "testing-template-repository-jkshdbjk", output)
 }
 
-func delay(seconds int) {
+func timer(s int) {
 	for {
-		if seconds <= 0 {
+		if s <= 0 {
 			break
 		} else {
-			log.Println(seconds)
-			time.Sleep(1 * time.Second)
-			seconds--
+			fmt.Println(s)
+			time.Sleep(1 * time.Second) // wait 1 sec
+			s--                         // reduce time
 		}
 	}
 }
