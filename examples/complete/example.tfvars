@@ -42,8 +42,8 @@ repository_environment = {
     users = ["mnsanfilippo"]
   }
   deployment_branch_policy = {
-    protected_branches = ["main"]
-    enforce_admins     = true
+    protected_branches     = true
+    custom_branch_policies = false
   }
   status_checks_contexts = ["terratest"]
 
