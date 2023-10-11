@@ -1,14 +1,16 @@
 ---
-name: terraform pre-commit
+name: terratest
+
 on:
   pull_request:
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:
-  pre-commit:
-    uses: flufi-io/workflows/.github/workflows/terraform_precommit.yaml@main
+  terratest:
+    uses: flufi-io/workflows/.github/workflows/terratest.yaml@main
     with:
       ref: ${{ github.event.pull_request.head.sha }}
     secrets: inherit
