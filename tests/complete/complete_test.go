@@ -17,19 +17,21 @@ func Test(t *testing.T) {
 
 	// Generate a random string
 	randHash := uuid.New().String()
-	originalName := terraform.GetVariableAsStringFromVarFile(t, "../../examples/complete/example.tfvars", "name")
+	originalName := terraform.GetVariableAsStringFromVarFile(t, "../../examples/complete/terraform.tfvars", "name")
 
 	// Update the name variable with the original value plus the hash
-	name := originalName + randHash
+	name := originalName + "-terratest-" + randHash
 
 	terraformOptions := &terraform.Options{
 		TerraformDir: "../../examples/complete/",
-		VarFiles:     []string{"example.tfvars"},
+		VarFiles:     []string{"terraform.tfvars"},
 		Vars: map[string]interface{}{
 			"name": name,
 		},
-		Upgrade:     true,
-		Reconfigure: true,
+		Upgrade:              true,
+		Reconfigure:          true,
+		Lock:                 true,
+		SetVarsAfterVarFiles: true,
 	}
 
 	defer terraform.Destroy(t, terraformOptions)

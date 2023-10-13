@@ -1,0 +1,16 @@
+---
+name: terratest
+
+on:
+  pull_request:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terratest:
+    uses: flufi-io/workflows/.github/workflows/terratest.yaml@op-terratest
+    with:
+      ref: ${{ github.event.pull_request.head.sha }}
+    secrets: inherit
