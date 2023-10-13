@@ -70,13 +70,6 @@ repos:
         files: (\.tf|\.terraform\.lock\.hcl)$
         exclude: \.terraform\/.*$
 
-  - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.32.0
-    hooks:
-      - id: yamllint
-        args:
-          - -c=.config/yamllint.yaml
-          - --strict
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -99,3 +92,11 @@ repos:
       - id: no-commit-to-branch
       - id: forbid-submodules
       - id: check-vcs-permalinks
+
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.32.0
+    hooks:
+      - id: yamllint
+        args:
+          - -c=.config/yamllint.yaml
+          - --strict

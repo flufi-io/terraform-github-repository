@@ -98,18 +98,18 @@ resource "github_repository_environment" "this" {
   depends_on  = [time_sleep.wait]
   environment = module.this.environment
   repository  = github_repository.this.name
-  dynamic "reviewers" {
-    for_each = length(var.repository_environment.reviewers.users) == 0 ? toset([]) : toset([1])
-    content {
-      users = var.repository_environment.reviewers.users
-      teams = var.repository_environment.reviewers.teams
-    }
-  }
-  dynamic "deployment_branch_policy" {
-    for_each = var.repository_environment.deployment_branch_policy.protected_branches == null ? toset([]) : toset([1])
-    content {
-      protected_branches     = var.repository_environment.deployment_branch_policy.protected_branches
-      custom_branch_policies = var.repository_environment.deployment_branch_policy.custom_branch_policies
-    }
-  }
+  #  dynamic "reviewers" {
+  #    for_each = length(var.repository_environment.reviewers.users) == 0 ? toset([]) : toset([1])
+  #    content {
+  #      users = var.repository_environment.reviewers.users
+  #      teams = var.repository_environment.reviewers.teams
+  #    }
+  #  }
+  #  dynamic "deployment_branch_policy" {
+  #    for_each = var.repository_environment.deployment_branch_policy.protected_branches == null ? toset([]) : toset([1])
+  #    content {
+  #      protected_branches     = var.repository_environment.deployment_branch_policy.protected_branches
+  #      custom_branch_policies = var.repository_environment.deployment_branch_policy.custom_branch_policies
+  #    }
+  #  }
 }

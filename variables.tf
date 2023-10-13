@@ -113,9 +113,3 @@ variable "repository_environment" {
     }))
   })
 }
-
-
-variable "github_token" {
-  description = "The GitHub token to use for authentication"
-  type        = string
-}
