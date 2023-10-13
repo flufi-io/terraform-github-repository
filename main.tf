@@ -89,9 +89,8 @@ resource "github_actions_secret" "this" {
 #### ENVIRONMENTS ####
 resource "time_sleep" "wait" {
   depends_on      = [github_repository.this]
-  create_duration = "30s"
+  create_duration = "5s"
 }
-
 
 
 resource "github_repository_environment" "this" {
