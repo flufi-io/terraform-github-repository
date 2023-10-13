@@ -39,6 +39,7 @@ restrictions = {
   users = ["mnsanfilippo"]
   apps  = ["github-actions"]
 }
+
 required_pull_request_reviews = {
   dismissal_teams                 = ["@flufi-io/devops-engineers"]
   dismissal_users                 = ["pipo-flufi"]
@@ -46,6 +47,7 @@ required_pull_request_reviews = {
   require_code_owner_reviews      = true
   required_approving_review_count = 1
 }
+
 status_checks_contexts = ["terratest"]
 
 action_secrets = {
@@ -72,6 +74,8 @@ repository_environment = {
   status_checks_contexts = ["terratest"]
 
 }
+
+
 #### TEMPLATE REPOSITORY ####
 is_template = false
 template_repository = {

@@ -28,9 +28,10 @@ func Test(t *testing.T) {
 		Vars: map[string]interface{}{
 			"name": name,
 		},
-		Upgrade:     true,
-		Reconfigure: true,
-		Lock:        true,
+		Upgrade:              true,
+		Reconfigure:          true,
+		Lock:                 true,
+		SetVarsAfterVarFiles: true,
 	}
 
 	defer terraform.Destroy(t, terraformOptions)
