@@ -29,6 +29,14 @@ variable "action_secrets" {
   default = {}
   type    = map(string)
 }
+variable "environment_secrets" {
+  default = {}
+  type    = map(string)
+}
+variable "dependabot_secrets" {
+  default = {}
+  type    = map(string)
+}
 
 variable "required_status_checks" {
   type = list(object({

@@ -6,6 +6,8 @@ module "repository" {
   restrictions                  = var.restrictions
   status_checks_contexts        = var.status_checks_contexts
   action_secrets                = var.action_secrets
+  dependabot_secrets            = var.dependabot_secrets
+  environment_secrets           = var.environment_secrets
   archive_on_destroy            = var.archive_on_destroy
   template_repository           = var.template_repository
   is_template                   = var.is_template

@@ -30,6 +30,14 @@ action_secrets = {
   new_secret = "bmV3X3NlY3JldAo="
 }
 
+dependabot_secrets = {
+  new_secret = "bmV3X3NlY3JldAo="
+}
+
+environment_secrets = {
+  new_secret = "bmV3X3NlY3JldAo="
+}
+
 repository_environment = {
 
   required_pull_request_reviews = {
