@@ -78,12 +78,6 @@ resource "github_branch_protection_v3" "main" {
 }
 
 
-resource "github_actions_secret" "this" {
-  for_each        = var.action_secrets
-  repository      = github_repository.this.name
-  secret_name     = each.key
-  encrypted_value = each.value
-}
 
 
 #### ENVIRONMENTS ####
@@ -111,4 +105,26 @@ resource "github_repository_environment" "this" {
   #      custom_branch_policies = var.repository_environment.deployment_branch_policy.custom_branch_policies
   #    }
   #  }
+}
+
+resource "github_actions_secret" "this" {
+  for_each        = var.action_secrets
+  repository      = github_repository.this.name
+  secret_name     = each.key
+  encrypted_value = each.value
+}
+
+resource "github_actions_environment_secret" "this" {
+  for_each        = var.environment_secrets
+  repository      = github_repository.this.name
+  environment     = github_repository_environment.this.environment
+  secret_name     = each.key
+  encrypted_value = each.value
+}
+
+resource "github_dependabot_secret" "this" {
+  for_each        = var.dependabot_secrets
+  repository      = github_repository.this.name
+  secret_name     = each.key
+  encrypted_value = each.value
 }
