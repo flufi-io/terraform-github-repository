@@ -1,14 +1,7 @@
+---
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
-    hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
-      - id: check-yaml
-      - id: check-added-large-files
-
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.71.0 # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
+    rev: v1.86.0  # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
     hooks:
       - id: terraform_fmt
         name: Terraform fmt
@@ -17,17 +10,6 @@ repos:
         language: script
         files: (\.tf|\.tfvars)$
         exclude: \.terraform\/.*$
-        fail_fast: true
-
-      - id: terraform_docs
-        name: Terraform docs
-        description: Inserts input and output documentation into README.md (using terraform-docs).
-        require_serial: true
-        entry: hooks/terraform_docs.sh
-        language: script
-        files: (\.tf|\.terraform\.lock\.hcl)$
-        exclude: \.terraform\/.*$
-        fail_fast: true
 
       - id: terraform_validate
         name: Terraform validate
@@ -37,7 +19,10 @@ repos:
         language: script
         files: (\.tf|\.tfvars)$
         exclude: \.terraform\/.*$
-        fail_fast: true
+        args:
+          - --tf-init-args=-upgrade
+          - --tf-init-args=-reconfigure
+          - --hook-config=--retry-once-with-cleanup=true
 
       - id: terraform_providers_lock
         name: Lock terraform provider versions
@@ -47,7 +32,6 @@ repos:
         language: script
         files: (\.terraform\.lock\.hcl)$
         exclude: \.terraform\/.*$
-        fail_fast: true
 
       - id: terraform_tflint
         name: Terraform validate with tflint
@@ -57,7 +41,6 @@ repos:
         language: script
         files: (\.tf|\.tfvars)$
         exclude: \.terraform\/.*$
-        fail_fast: true
 
       - id: terraform_tfsec
         name: Terraform validate with tfsec
@@ -65,7 +48,6 @@ repos:
         require_serial: true
         entry: hooks/terraform_tfsec.sh
         language: script
-        fail_fast: true
 
       - id: terraform_checkov
         name: Checkov
@@ -76,25 +58,47 @@ repos:
         files: \.tf$
         exclude: \.terraform\/.*$
         require_serial: true
-        fail_fast: true
+        args:
+          - --args=--config-file __GIT_WORKING_DIR__/.checkov.yml
+
+      - id: terraform_docs
+        name: Terraform docs
+        description: Inserts input and output documentation into README.md (using terraform-docs).
+        require_serial: true
+        entry: hooks/terraform_docs.sh
+        language: script
+        files: (\.tf|\.terraform\.lock\.hcl)$
+        exclude: \.terraform\/.*$
 
       - id: tfupdate
-        name: tfupdate
-        description: Runs tfupdate on Terraform templates.
-        language: script
-        entry: hooks/tfupdate.sh
+        name: auto update terraform providers
         args:
-          - --args=terraform
-        files: \.tf$
-        require_serial: true
-        fail_fast: true
-
-  - repo: local
+          - --args=provider integrations/github
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.33.0
     hooks:
-      - id: terratest
-        name: terratest
-        entry: tests/complete/precommit.sh
-        pass_filenames: false
-        types: [ go ]
-        language: system
-        fail_fast: true
+      - id: yamllint
+        args:
+          - -c=.config/yamllint.yaml
+          - --strict
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-merge-conflict
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-json
+      - id: pretty-format-json
+        args:
+          - '--autofix'
+      - id: check-yaml
+      - id: check-symlinks
+      - id: check-added-large-files
+        args: ['--maxkb=3000']
+      - id: detect-aws-credentials
+        args:
+          - '--allow-missing-credentials'
+      - id: detect-private-key
+      - id: no-commit-to-branch
+      - id: forbid-submodules
+      - id: check-vcs-permalinks

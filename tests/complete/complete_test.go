@@ -1,50 +1,69 @@
 package test
 
 import (
-	"github.com/joho/godotenv"
-	"log"
+	"fmt"
+	"github.com/gruntwork-io/terratest/modules/random"
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"os"
+	"os/exec"
 	"strconv"
 	"testing"
 	"time"
-
-	"github.com/gruntwork-io/terratest/modules/terraform"
-	"github.com/stretchr/testify/assert"
 )
 
-func TestCompleteExample(t *testing.T) {
-	godotenv.Load("../../.env")
-	// DELAY is the time in seconds to run terraform destroy after terraform apply
-	DELAY, _ := strconv.Atoi(os.Getenv("DELAY"))
-	varFiles := []string{"../../examples/complete/terraform.tfvars"}
+var TimeToDestroy, _ = strconv.Atoi(os.Getenv("TIME_TO_DESTROY"))
+
+func Test(t *testing.T) {
+	t.Parallel()
+	// Run secrets.sh script
+	runSecretsScript(t, "secrets.sh", "-d", "sandbox")
+	// Generate a random string
+	randHash := random.UniqueId()
+	originalName := terraform.GetVariableAsStringFromVarFile(t, "../../examples/complete/fixtures.sandbox.tfvars.json", "name")
+	// Update the name variable with the original value plus the hash
+	name := originalName + "-terratest-" + randHash
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: "../../examples/complete",
-		VarFiles:     varFiles,
-		Vars:         map[string]interface{}{},
-		Upgrade:      true,
-		Reconfigure:  true,
+		TerraformDir: "../../examples/complete/",
+		VarFiles:     []string{"fixtures.sandbox.tfvars.json"},
+		Vars: map[string]interface{}{
+			"name": name,
+		},
+		Upgrade:              true,
+		Reconfigure:          true,
+		Lock:                 true,
+		SetVarsAfterVarFiles: true,
 	})
 
+	defer runSecretsScript(t, "secrets.sh", "-e", "sandbox")
 	defer terraform.Destroy(t, terraformOptions)
-	// Delay the execution of the terraform destroy
 	defer func() {
-		delay(DELAY)
+		timer(TimeToDestroy)
 	}()
 
 	terraform.InitAndApply(t, terraformOptions)
-
-	output := terraform.Output(t, terraformOptions, "repository_name")
-	assert.Equal(t, "testing-template-repository-jkshdbjk", output)
 }
 
-func delay(seconds int) {
+func runSecretsScript(t *testing.T, scriptName string, args ...string) {
+	// Prepend the script name to the args slice
+	t.Log("Running script: " + scriptName)
+	commandArgs := append([]string{scriptName}, args...)
+
+	cmd := exec.Command("bash", commandArgs...)
+	cmd.Dir = "../../examples/complete/"
+	err := cmd.Run()
+	if err != nil {
+		t.Fatalf("Failed to execute script: %s", err)
+	}
+}
+
+func timer(s int) {
 	for {
-		if seconds <= 0 {
+		if s <= 0 {
 			break
 		} else {
-			log.Println(seconds)
-			time.Sleep(1 * time.Second)
-			seconds--
+			fmt.Println(s)
+			time.Sleep(1 * time.Second) // wait 1 sec
+			s--                         // reduce time
 		}
 	}
 }

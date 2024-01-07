@@ -1,7 +1,3 @@
-variable "name" {
-  type        = string
-  description = "Name of the repository"
-}
 variable "description" {
   type        = string
   description = "Description of the repository"
@@ -19,42 +15,53 @@ variable "enable_branch_protection" {
   default     = true
 }
 
-variable "template_files" {
-  type        = list(string)
-  description = "List of the paths of the files that will be added in the new repo"
-  default     = []
-}
-variable "template_files_prefix" {
-  type        = string
-  default     = ""
-  description = "Prefix of the file path to be removed in the new repo"
-}
-
 variable "status_checks_contexts" {
   default     = []
   type        = list(string)
   description = "Contexts for the status_checks branch protection"
 }
 variable "required_pull_request_reviews" {
+  default = null
   type = object({
-    dismissal_teams                 = list(string)
-    dismissal_users                 = list(string)
-    dismiss_stale_reviews           = bool
-    require_code_owner_reviews      = bool
-    required_approving_review_count = number
+    dismissal_teams                 = optional(list(string))
+    dismissal_users                 = optional(list(string))
+    dismiss_stale_reviews           = optional(bool)
+    require_code_owner_reviews      = optional(bool)
+    required_approving_review_count = optional(number)
   })
   description = "Branch protection options to require PR reviews."
 }
 variable "restrictions" {
   type = object({
-    teams = list(string)
-    users = list(string)
-    apps  = list(string)
+    teams = optional(list(string))
+    users = optional(list(string))
+    apps  = optional(list(string))
   })
+  default     = null
   description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
 }
 
 variable "secrets" {
-  default = {}
-  type    = map(string)
+  description = "Secrets to add to the repository"
+  default     = {}
+  type        = map(string)
+}
+
+variable "template" {
+  description = "Template repository to use for this repository"
+  default     = null
+  type = object({
+    owner                = string
+    repository           = string
+    include_all_branches = optional(bool, false)
+  })
+}
+variable "archive_on_destroy" {
+  type        = bool
+  description = "Set to true to archive the repository instead of deleting it."
+  default     = false
+}
+variable "required_deployment_environments" {
+  type        = list(string)
+  description = "The list of environments that must be deployed to from this branch before it can be merged into the destination branch."
 }

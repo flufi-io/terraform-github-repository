@@ -8,8 +8,7 @@ header-from: main.tf
 footer-from: ""
 
 recursive:
-  enabled: true
-  path: examples
+  enabled: false
 
 sections:
   show:
@@ -21,14 +20,14 @@ sections:
 
 # content: ""
 content: |-
-  # Examples
+  # How to use this module
   ```hcl
   # main.tf
-  {{ include "examples/complete/main.tf" }}
+  {{ include "main.tf" }}
   ```
   ```hcl
   # terraform.tfvars.json
-  {{ include "examples/complete/example.tfvars.json" }}
+  {{ include "example.tfvars.json" }}
   ```
   {{ .Header }}
   {{ .Providers }}
