@@ -42,15 +42,15 @@ resource "github_branch_protection" "main" {
       contexts = var.status_checks_contexts
     }
   }
-#  dynamic "required_pull_request_reviews" {
-#    for_each = var.required_pull_request_reviews == null ? toset([]) : toset([1])
-#    content {
-#      dismiss_stale_reviews           = true
-#      require_code_owner_reviews      = var.required_pull_request_reviews.require_code_owner_reviews
-#      required_approving_review_count = var.required_pull_request_reviews.required_approving_review_count
-#      require_last_push_approval      = true
-#    }
-#  }
+  #  dynamic "required_pull_request_reviews" {
+  #    for_each = var.required_pull_request_reviews == null ? toset([]) : toset([1])
+  #    content {
+  #      dismiss_stale_reviews           = true
+  #      require_code_owner_reviews      = var.required_pull_request_reviews.require_code_owner_reviews
+  #      required_approving_review_count = var.required_pull_request_reviews.required_approving_review_count
+  #      require_last_push_approval      = true
+  #    }
+  #  }
   required_linear_history = false
   require_signed_commits  = true
   allows_deletions        = false
@@ -142,14 +142,15 @@ resource "github_repository_ruleset" "this" {
     deletion                = true
     required_linear_history = false
     required_signatures     = true
-    force_push              = true
-#    pull_request {
-#      dismiss_stale_reviews_on_push     = true
-#      require_code_owner_review         = var.required_pull_request_reviews.require_code_owner_reviews
-#      required_approving_review_count   = var.required_pull_request_reviews.required_approving_review_count
-#      require_last_push_approval        = true
-#      required_review_thread_resolution = true
-#    }
+    non_fast_forward        = true
+
+    #    pull_request {
+    #      dismiss_stale_reviews_on_push     = true
+    #      require_code_owner_review         = var.required_pull_request_reviews.require_code_owner_reviews
+    #      required_approving_review_count   = var.required_pull_request_reviews.required_approving_review_count
+    #      require_last_push_approval        = true
+    #      required_review_thread_resolution = true
+    #    }
     required_deployments {
       required_deployment_environments = var.required_deployment_environments
     }
