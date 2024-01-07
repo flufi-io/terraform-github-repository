@@ -139,7 +139,7 @@ resource "github_repository_ruleset" "this" {
   }
   rules {
     creation                = true
-    update                  = true
+    update                  = false
     deletion                = true
     required_linear_history = true
     required_signatures     = true
