@@ -15,7 +15,6 @@ resource "github_repository" "this" {
   web_commit_signoff_required = true
   allow_update_branch         = true
   archive_on_destroy          = var.archive_on_destroy
-
   dynamic "template" {
     for_each = var.template == null ? toset([]) : toset([1])
     content {
@@ -141,7 +140,7 @@ resource "github_repository_ruleset" "this" {
     creation                = true
     update                  = false
     deletion                = true
-    required_linear_history = true
+    required_linear_history = false
     required_signatures     = true
 #    pull_request {
 #      dismiss_stale_reviews_on_push     = true
