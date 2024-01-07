@@ -143,13 +143,13 @@ resource "github_repository_ruleset" "this" {
     deletion                = true
     required_linear_history = true
     required_signatures     = true
-    pull_request {
-      dismiss_stale_reviews_on_push     = true
-      require_code_owner_review         = var.required_pull_request_reviews.require_code_owner_reviews
-      required_approving_review_count   = var.required_pull_request_reviews.required_approving_review_count
-      require_last_push_approval        = true
-      required_review_thread_resolution = true
-    }
+#    pull_request {
+#      dismiss_stale_reviews_on_push     = true
+#      require_code_owner_review         = var.required_pull_request_reviews.require_code_owner_reviews
+#      required_approving_review_count   = var.required_pull_request_reviews.required_approving_review_count
+#      require_last_push_approval        = true
+#      required_review_thread_resolution = true
+#    }
     required_deployments {
       required_deployment_environments = var.required_deployment_environments
     }
