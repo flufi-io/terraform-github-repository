@@ -43,15 +43,15 @@ resource "github_branch_protection" "main" {
       contexts = var.status_checks_contexts
     }
   }
-  dynamic "required_pull_request_reviews" {
-    for_each = var.required_pull_request_reviews == null ? toset([]) : toset([1])
-    content {
-      dismiss_stale_reviews           = true
-      require_code_owner_reviews      = var.required_pull_request_reviews.require_code_owner_reviews
-      required_approving_review_count = var.required_pull_request_reviews.required_approving_review_count
-      require_last_push_approval      = true
-    }
-  }
+#  dynamic "required_pull_request_reviews" {
+#    for_each = var.required_pull_request_reviews == null ? toset([]) : toset([1])
+#    content {
+#      dismiss_stale_reviews           = true
+#      require_code_owner_reviews      = var.required_pull_request_reviews.require_code_owner_reviews
+#      required_approving_review_count = var.required_pull_request_reviews.required_approving_review_count
+#      require_last_push_approval      = true
+#    }
+#  }
   required_linear_history = true
   require_signed_commits  = true
   allows_deletions        = false
