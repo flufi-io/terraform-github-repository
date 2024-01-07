@@ -51,7 +51,7 @@ resource "github_branch_protection" "main" {
 #      require_last_push_approval      = true
 #    }
 #  }
-  required_linear_history = true
+  required_linear_history = false
   require_signed_commits  = true
   allows_deletions        = false
   allows_force_pushes     = false
@@ -142,6 +142,7 @@ resource "github_repository_ruleset" "this" {
     deletion                = true
     required_linear_history = false
     required_signatures     = true
+    force_push              = true
 #    pull_request {
 #      dismiss_stale_reviews_on_push     = true
 #      require_code_owner_review         = var.required_pull_request_reviews.require_code_owner_reviews
