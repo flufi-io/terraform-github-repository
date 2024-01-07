@@ -10,4 +10,9 @@
 !.terraform-docs.yml
 **/go.*
 go.*
-.external_modules
+.env
+**/terraform.tfvars
+terraform.tfvars
+**.external_modules/
+!**/example.tfvars.json
+*.tfvars.json

@@ -255,30 +255,3 @@ variable "descriptor_formats" {
 }
 
 #### End of copy of cloudposse/terraform-null-label/variables.tf
-
-
-module "label" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
-  context = module.this.context
-  name    = module.this.name
-}
-module "oct" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
-  context = module.this.context
-  name    = "${module.this.name}-oct-key"
-}
-
-module "ssh" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
-  context = module.this.context
-  name    = "${module.this.name}-ssh-key"
-}
-module "msk" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
-  context = module.this.context
-  name    = "${module.this.name}-msk"
-}
