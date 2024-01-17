@@ -20,7 +20,7 @@ module "repository" {
 ```hcl
 # terraform.tfvars.json
 {
-  "archive_on_destroy": "true",
+  "archive_on_destroy": "false",
   "description": "This is a test repository",
   "environment": "sandbox",
   "label_order": [
@@ -34,11 +34,25 @@ module "repository" {
   "required_deployment_environments": [
     "sandbox"
   ],
+  "required_pull_request_reviews": {
+    "dismiss_stale_reviews": "true",
+    "dismissal_restrictions": {
+      "users": [
+        "mnsanfilippo"
+      ]
+    },
+    "require_code_owner_reviews": "true",
+    "required_approving_review_count": 0
+  },
   "secrets": {
     "secret1": "cmFuZG9tcGFzc3dvcmQ=",
     "secret2": "cmFuZG9tcGFzc3dvcmQ="
   },
   "stage": "module",
+  "status_checks_contexts": [
+    "terratest",
+    "terraform pre-commit"
+  ],
   "visibility": "private"
 }
 ```
