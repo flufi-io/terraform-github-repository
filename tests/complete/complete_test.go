@@ -17,7 +17,7 @@ func Test(t *testing.T) {
 	// Run secrets.sh script
 	// Generate a random string
 	randHash := random.UniqueId()
-	originalName := terraform.GetVariableAsStringFromVarFile(t, "../../examples/complete/fixtures.sandbox.tfvars.json", "name")
+	originalName := terraform.GetVariableAsStringFromVarFile(t, "../../examples/complete/terraform.tfvars", "name")
 	// Update the name variable with the original value plus the hash
 	name := originalName + "-terratest-" + randHash
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
