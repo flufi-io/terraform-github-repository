@@ -16,5 +16,5 @@ jobs:
     with:
       ref: ${{ github.event.pull_request.head.sha }}
       working-directory: examples/complete
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PAT }}
+      env: |
+        TF_VAR_github_token=${{ secrets.GH_TOKEN_PAT }}
