@@ -1,20 +1,19 @@
 resource "github_repository" "this" {
-  name                        = module.this.name
-  description                 = var.description
-  visibility                  = var.visibility
-  auto_init                   = true
-  vulnerability_alerts        = true
-  has_issues                  = true
-  has_projects                = true
-  has_wiki                    = true
-  allow_merge_commit          = true
-  allow_squash_merge          = true
-  allow_rebase_merge          = true
-  delete_branch_on_merge      = true
-  allow_auto_merge            = true
-  web_commit_signoff_required = true
-  allow_update_branch         = true
-  archive_on_destroy          = var.archive_on_destroy
+  name                   = module.this.name
+  description            = var.description
+  visibility             = var.visibility
+  auto_init              = true
+  vulnerability_alerts   = true
+  has_issues             = true
+  has_projects           = true
+  has_wiki               = true
+  allow_merge_commit     = true
+  allow_squash_merge     = true
+  allow_rebase_merge     = true
+  delete_branch_on_merge = true
+  allow_auto_merge       = true
+  allow_update_branch    = true
+  archive_on_destroy     = var.archive_on_destroy
   dynamic "template" {
     for_each = var.template == null ? toset([]) : toset([1])
     content {
@@ -110,58 +109,58 @@ resource "github_repository_environment" "this" {
 #}
 
 resource "github_actions_environment_secret" "this" {
-  for_each        = var.secrets
+  for_each        = toset(nonsensitive(keys(var.secrets)))
   environment     = github_repository_environment.this.environment
   secret_name     = each.key
-  encrypted_value = each.value
+  encrypted_value = var.secrets[each.key]
   repository      = github_repository.this.name
 }
 
-resource "github_dependabot_secret" "this" {
-  for_each        = github_repository_environment.this.environment == "sandbox" ? var.secrets : {}
-  secret_name     = each.key
-  encrypted_value = each.value
-  repository      = github_repository.this.name
-}
+# resource "github_dependabot_secret" "this" {
+#   for_each        = github_repository_environment.this.environment == "sandbox" ? var.secrets : {}
+#   secret_name     = var.secrets.keys[each.key]
+#   encrypted_value = var.secrets.values[each.key]
+#   repository      = github_repository.this.name
+# }
 
 
-resource "github_repository_ruleset" "this" {
-  repository  = github_repository.this.name
-  enforcement = "active"
-  name        = "main"
-  target      = "branch"
-  conditions {
-    ref_name {
-      include = ["~DEFAULT_BRANCH"]
-      exclude = []
-    }
-  }
-  rules {
-    creation                = true
-    update                  = false
-    deletion                = true
-    required_linear_history = false
-    required_signatures     = true
-    non_fast_forward        = true
-
-    #    pull_request {
-    #      dismiss_stale_reviews_on_push     = true
-    #      require_code_owner_review         = var.required_pull_request_reviews.require_code_owner_reviews
-    #      required_approving_review_count   = var.required_pull_request_reviews.required_approving_review_count
-    #      require_last_push_approval        = true
-    #      required_review_thread_resolution = true
-    #    }
-    required_deployments {
-      required_deployment_environments = var.required_deployment_environments
-    }
-    required_status_checks {
-      dynamic "required_check" {
-        for_each = var.status_checks_contexts
-        content {
-          context = required_check.value
-        }
-      }
-      strict_required_status_checks_policy = true
-    }
-  }
-}
+# resource "github_repository_ruleset" "this" {
+#   repository  = github_repository.this.name
+#   enforcement = "active"
+#   name        = "main"
+#   target      = "branch"
+#   conditions {
+#     ref_name {
+#       include = ["~DEFAULT_BRANCH"]
+#       exclude = []
+#     }
+#   }
+#   rules {
+#     creation                = true
+#     update                  = false
+#     deletion                = true
+#     required_linear_history = false
+#     required_signatures     = true
+#     non_fast_forward        = true
+#
+#     #    pull_request {
+#     #      dismiss_stale_reviews_on_push     = true
+#     #      require_code_owner_review         = var.required_pull_request_reviews.require_code_owner_reviews
+#     #      required_approving_review_count   = var.required_pull_request_reviews.required_approving_review_count
+#     #      require_last_push_approval        = true
+#     #      required_review_thread_resolution = true
+#     #    }
+#     required_deployments {
+#       required_deployment_environments = var.required_deployment_environments
+#     }
+#     required_status_checks {
+#       dynamic "required_check" {
+#         for_each = var.status_checks_contexts
+#         content {
+#           context = required_check.value
+#         }
+#       }
+#       strict_required_status_checks_policy = true
+#     }
+#   }
+# }

@@ -18,28 +18,81 @@ module "repository" {
 }
 ```
 ```hcl
-# terraform.tfvars.json
-{
-  "archive_on_destroy": "true",
-  "description": "This is a test repository",
-  "environment": "sandbox",
-  "label_order": [
-    "namespace",
-    "stage",
-    "name",
-    "environment"
-  ],
-  "name": "repository",
-  "namespace": "flufi",
-  "required_deployment_environments": [
-    "sandbox"
-  ],
-  "secrets": {
-    "secret1": "cmFuZG9tcGFzc3dvcmQ=",
-    "secret2": "cmFuZG9tcGFzc3dvcmQ="
-  },
-  "stage": "module",
-  "visibility": "private"
+# terraform.tfvars
+archive_on_destroy = "false"
+
+description = "This is a test repository"
+
+environment = "sandbox"
+
+label_order = ["namespace", "stage", "name", "environment"]
+
+name = "repository"
+
+namespace = "flufi"
+
+required_deployment_environments = ["sandbox"]
+
+
+stage = "module"
+
+visibility             = "private"
+status_checks_contexts = ["terratest"]
+secrets = {
+  SECRET_1 = "c2VjcmV0XzE="
+  SECRET_2 = "c2VjcmV0XzI="
+}
+```
+
+```hcl
+# variables.tf
+variable "description" {
+  type        = string
+  description = "Description of the repository"
+}
+variable "visibility" {
+  type        = string
+  description = "Visibility of the repository"
+  default     = "private"
+}
+variable "secrets" {
+  description = "Secrets to be stored in the repository secrets"
+  type        = map(string)
+  sensitive   = true
+}
+variable "archive_on_destroy" {
+  type        = bool
+  description = "Set to true to archive the repository instead of deleting it."
+}
+variable "status_checks_contexts" {
+  default     = []
+  type        = list(string)
+  description = "Contexts for the status_checks branch protection"
+}
+variable "required_pull_request_reviews" {
+  default = null
+  type = object({
+    dismissal_teams                 = optional(list(string))
+    dismissal_users                 = optional(list(string))
+    dismiss_stale_reviews           = optional(bool)
+    require_code_owner_reviews      = optional(bool)
+    required_approving_review_count = optional(number)
+  })
+  description = "Branch protection options to require PR reviews."
+}
+#variable "restrictions" {
+#  type = object({
+#    teams = optional(list(string))
+#    users = optional(list(string))
+#    apps  = optional(list(string))
+#  })
+#  default     = null
+#  description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
+#}
+
+variable "required_deployment_environments" {
+  type        = list(string)
+  description = "The list of environments that must be deployed to from this branch before it can be merged into the destination branch."
 }
 ```
 
@@ -67,7 +120,7 @@ module "repository" {
 | <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Terraform regular expression (regex) string.<br>Characters matching the regex will be removed from the ID elements.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | <a name="input_required_deployment_environments"></a> [required\_deployment\_environments](#input\_required\_deployment\_environments) | The list of environments that must be deployed to from this branch before it can be merged into the destination branch. | `list(string)` | n/a | yes |
 | <a name="input_required_pull_request_reviews"></a> [required\_pull\_request\_reviews](#input\_required\_pull\_request\_reviews) | Branch protection options to require PR reviews. | <pre>object({<br>    dismissal_teams                 = optional(list(string))<br>    dismissal_users                 = optional(list(string))<br>    dismiss_stale_reviews           = optional(bool)<br>    require_code_owner_reviews      = optional(bool)<br>    required_approving_review_count = optional(number)<br>  })</pre> | `null` | no |
-| <a name="input_secrets"></a> [secrets](#input\_secrets) | n/a | `map(string)` | `{}` | no |
+| <a name="input_secrets"></a> [secrets](#input\_secrets) | Secrets to be stored in the repository secrets | `map(string)` | n/a | yes |
 | <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_status_checks_contexts"></a> [status\_checks\_contexts](#input\_status\_checks\_contexts) | Contexts for the status\_checks branch protection | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `{'BusinessUnit': 'XYZ'}`).<br>Neither the tag keys nor the tag values will be modified by this module. | `map(string)` | `{}` | no |
@@ -77,6 +130,6 @@ module "repository" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_repository_name"></a> [repository\_name](#output\_repository\_name) | n/a |
+| <a name="output_repository_name"></a> [repository\_name](#output\_repository\_name) | The name of the repository |
 ## Resources
 <!-- END_TF_DOCS -->

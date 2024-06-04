@@ -1,4 +1,5 @@
 module "this" {
+  # tflint-ignore: all
   source  = "cloudposse/label/null"
   version = "0.25.0" # requires Terraform >= 0.13.0
 
@@ -73,12 +74,14 @@ variable "context" {
 }
 
 variable "enabled" {
+  # tflint-ignore: all
   type        = bool
   default     = null
   description = "Set to false to prevent the module from creating any resources"
 }
 
 variable "namespace" {
+  # tflint-ignore: all
   type        = string
   default     = null
   description = "ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique"
@@ -97,12 +100,14 @@ variable "environment" {
 }
 
 variable "stage" {
+  # tflint-ignore: all
   type        = string
   default     = null
   description = "ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release'"
 }
 
 variable "name" {
+  # tflint-ignore: all
   type        = string
   default     = null
   description = <<-EOT
@@ -113,6 +118,7 @@ variable "name" {
 }
 
 variable "delimiter" {
+  # tflint-ignore: all
   type        = string
   default     = null
   description = <<-EOT
@@ -122,6 +128,7 @@ variable "delimiter" {
 }
 
 variable "attributes" {
+  # tflint-ignore: all
   type        = list(string)
   default     = []
   description = <<-EOT
@@ -133,6 +140,7 @@ variable "attributes" {
 }
 
 variable "labels_as_tags" {
+  # tflint-ignore: all
   type        = set(string)
   default     = ["default"]
   description = <<-EOT
@@ -148,6 +156,7 @@ variable "labels_as_tags" {
 }
 
 variable "tags" {
+  # tflint-ignore: all
   type        = map(string)
   default     = {}
   description = <<-EOT
@@ -157,6 +166,7 @@ variable "tags" {
 }
 
 variable "additional_tag_map" {
+  # tflint-ignore: all
   type        = map(string)
   default     = {}
   description = <<-EOT
@@ -167,6 +177,7 @@ variable "additional_tag_map" {
 }
 
 variable "label_order" {
+  # tflint-ignore: all
   type        = list(string)
   default     = null
   description = <<-EOT
@@ -177,6 +188,7 @@ variable "label_order" {
 }
 
 variable "regex_replace_chars" {
+  # tflint-ignore: all
   type        = string
   default     = null
   description = <<-EOT
@@ -187,6 +199,7 @@ variable "regex_replace_chars" {
 }
 
 variable "id_length_limit" {
+  # tflint-ignore: all
   type        = number
   default     = null
   description = <<-EOT
@@ -202,6 +215,7 @@ variable "id_length_limit" {
 }
 
 variable "label_key_case" {
+  # tflint-ignore: all
   type        = string
   default     = null
   description = <<-EOT
@@ -218,6 +232,7 @@ variable "label_key_case" {
 }
 
 variable "label_value_case" {
+  # tflint-ignore: all
   type        = string
   default     = null
   description = <<-EOT
@@ -236,6 +251,7 @@ variable "label_value_case" {
 }
 
 variable "descriptor_formats" {
+  # tflint-ignore: all
   type        = any
   default     = {}
   description = <<-EOT

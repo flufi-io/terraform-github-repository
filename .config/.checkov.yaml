@@ -1,0 +1,12 @@
+---
+# .config/.checkov.yml
+download-external-modules: true
+framework:
+  - all
+quiet: true
+skip-path:
+  - .external_modules
+  - .terraform
+enable-secret-scan-all-files: true
+skip-check:
+  - CKV_TF_1  # "Ensure Terraform module sources use a commit hash"

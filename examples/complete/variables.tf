@@ -8,8 +8,9 @@ variable "visibility" {
   default     = "private"
 }
 variable "secrets" {
-  default = {}
-  type    = map(string)
+  description = "Secrets to be stored in the repository secrets"
+  type        = map(string)
+  sensitive   = true
 }
 variable "archive_on_destroy" {
   type        = bool

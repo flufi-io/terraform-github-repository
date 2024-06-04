@@ -1,6 +1,7 @@
 variable "description" {
   type        = string
   description = "Description of the repository"
+  default     = ""
 }
 
 variable "visibility" {
@@ -31,20 +32,20 @@ variable "required_pull_request_reviews" {
   })
   description = "Branch protection options to require PR reviews."
 }
-variable "restrictions" {
-  type = object({
-    teams = optional(list(string))
-    users = optional(list(string))
-    apps  = optional(list(string))
-  })
-  default     = null
-  description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
-}
+# variable "restrictions" {
+#   type = object({
+#     teams = optional(list(string))
+#     users = optional(list(string))
+#     apps  = optional(list(string))
+#   })
+#   default     = null
+#   description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
+# }
 
 variable "secrets" {
-  description = "Secrets to add to the repository"
-  default     = {}
+  description = "Secrets to be stored in the repository secrets"
   type        = map(string)
+  sensitive   = true
 }
 
 variable "template" {
@@ -62,6 +63,7 @@ variable "archive_on_destroy" {
   default     = false
 }
 variable "required_deployment_environments" {
+  default     = []
   type        = list(string)
   description = "The list of environments that must be deployed to from this branch before it can be merged into the destination branch."
 }

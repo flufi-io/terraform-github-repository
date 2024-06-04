@@ -1,7 +1,7 @@
 ---
 repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.86.0  # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
+    rev: v1.90.0  # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
     hooks:
       - id: terraform_fmt
         name: Terraform fmt
@@ -9,20 +9,7 @@ repos:
         entry: hooks/terraform_fmt.sh
         language: script
         files: (\.tf|\.tfvars)$
-        exclude: \.terraform\/.*$
-
-      - id: terraform_validate
-        name: Terraform validate
-        description: Validates all Terraform configuration files.
-        require_serial: true
-        entry: hooks/terraform_validate.sh
-        language: script
-        files: (\.tf|\.tfvars)$
-        exclude: \.terraform\/.*$
-        args:
-          - --tf-init-args=-upgrade
-          - --tf-init-args=-reconfigure
-          - --hook-config=--retry-once-with-cleanup=true
+        exclude: ^\.terraform/.*$|^.*/\.terraform/.*$|^\.external_modules/.*$|^.*/\.external_modules/.*$
 
       - id: terraform_providers_lock
         name: Lock terraform provider versions
@@ -31,7 +18,20 @@ repos:
         entry: hooks/terraform_providers_lock.sh
         language: script
         files: (\.terraform\.lock\.hcl)$
-        exclude: \.terraform\/.*$
+        exclude: ^\.terraform/.*$|^.*/\.terraform/.*$|^\.external_modules/.*$|^.*/\.external_modules/.*$
+        args:
+          - --hook-config=--mode=only-check-is-current-lockfile-cross-platform
+
+      - id: terraform_validate
+        name: Terraform validate
+        description: Validates all Terraform configuration files.
+        require_serial: true
+        entry: hooks/terraform_validate.sh
+        language: script
+        files: (\.tf|\.tfvars)$
+        exclude: ^\.terraform/.*$|^.*/\.terraform/.*$|^\.external_modules/.*$|^.*/\.external_modules/.*$
+        args:
+          - --tf-init-args=-lock=false
 
       - id: terraform_tflint
         name: Terraform validate with tflint
@@ -40,26 +40,9 @@ repos:
         entry: hooks/terraform_tflint.sh
         language: script
         files: (\.tf|\.tfvars)$
-        exclude: \.terraform\/.*$
-
-      - id: terraform_tfsec
-        name: Terraform validate with tfsec
-        description: Static analysis of Terraform templates to spot potential security issues.
-        require_serial: true
-        entry: hooks/terraform_tfsec.sh
-        language: script
-
-      - id: terraform_checkov
-        name: Checkov
-        description: Runs checkov on Terraform templates.
-        entry: hooks/terraform_checkov.sh
-        language: script
-        always_run: false
-        files: \.tf$
-        exclude: \.terraform\/.*$
-        require_serial: true
+        exclude: ^\.terraform/.*$|^\.external_modules/.*$|(context\.tf)$
         args:
-          - --args=--config-file __GIT_WORKING_DIR__/.checkov.yml
+          - --args=--config __GIT_WORKING_DIR__/.config/.tflint.hcl
 
       - id: terraform_docs
         name: Terraform docs
@@ -68,33 +51,47 @@ repos:
         entry: hooks/terraform_docs.sh
         language: script
         files: (\.tf|\.terraform\.lock\.hcl)$
-        exclude: \.terraform\/.*$
+        exclude: ^\.terraform/.*$|^\.external_modules/.*$
 
-      - id: tfupdate
-        name: auto update terraform providers
+      - id: terraform_trivy
+        name: Terraform validate with trivy
+        description: Static analysis of Terraform templates to spot potential security issues.
+        require_serial: true
+        entry: hooks/terraform_trivy.sh
+        language: script
+        exclude: ^\.terraform/.*$|^.*/\.terraform/.*$|^\.external_modules/.*$|^.*/\.external_modules/.*$|(context\.tf)$
         args:
-          - --args=provider integrations/github
+          - --args=--config __GIT_WORKING_DIR__/.config/.trivy.yaml
+
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: '3.2.107'
+    exclude: ^\.terraform/.*$|^.*/\.terraform/.*$|^\.external_modules/.*$|^.*/\.external_modules/.*$|(context\.tf)$
+    hooks:
+      - id: checkov
+        args:
+          - --config-file=.config/.checkov.yaml
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.33.0
+    rev: v1.35.1
     hooks:
       - id: yamllint
         args:
-          - -c=.config/yamllint.yaml
+          - -c=.config/.yamllint.yaml
           - --strict
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: check-merge-conflict
       - id: trailing-whitespace
-      - id: end-of-file-fixer
-      - id: check-json
       - id: pretty-format-json
         args:
           - '--autofix'
+      - id: end-of-file-fixer
+      - id: check-json
       - id: check-yaml
       - id: check-symlinks
       - id: check-added-large-files
-        args: ['--maxkb=3000']
+        args: [ '--maxkb=3000' ]
       - id: detect-aws-credentials
         args:
           - '--allow-missing-credentials'
@@ -102,3 +99,4 @@ repos:
       - id: no-commit-to-branch
       - id: forbid-submodules
       - id: check-vcs-permalinks
+      - id: debug-statements

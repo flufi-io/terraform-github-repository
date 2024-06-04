@@ -1,15 +1,11 @@
 ---
 # terraform-docs configuration
 formatter: markdown table
-
 version: ""
-
 header-from: main.tf
 footer-from: ""
-
 recursive:
   enabled: false
-
 sections:
   show:
     - header
@@ -18,7 +14,6 @@ sections:
     - modules
     - outputs
 
-# content: ""
 content: |-
   # How to use this module
   ```hcl
@@ -26,8 +21,13 @@ content: |-
   {{ include "main.tf" }}
   ```
   ```hcl
-  # terraform.tfvars.json
-  {{ include "example.tfvars.json" }}
+  # terraform.tfvars
+  {{ include "terraform.tfvars" }}
+  ```
+
+  ```hcl
+  # variables.tf
+  {{ include "variables.tf" }}
   ```
   {{ .Header }}
   {{ .Providers }}
@@ -45,7 +45,6 @@ output:
     <!-- BEGIN_TF_DOCS -->
     {{ .Content }}
     <!-- END_TF_DOCS -->
-
 
 sort:
   enabled: true
