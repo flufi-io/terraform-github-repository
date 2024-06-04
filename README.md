@@ -1,4 +1,4 @@
-# terraform-github-repository
+
 <!-- BEGIN_TF_DOCS -->
 # Examples
 ## Complete
@@ -35,10 +35,6 @@ stage = "module"
 
 visibility             = "private"
 status_checks_contexts = ["terratest"]
-secrets = {
-  SECRET_1 = "c2VjcmV0XzE="
-  SECRET_2 = "c2VjcmV0XzI="
-}
 ```
 ## Resources
 
@@ -47,7 +43,7 @@ secrets = {
 - resource.github_branch_protection.main (main.tf#33)
 - resource.github_repository.this (main.tf#1)
 - resource.github_repository_environment.this (main.tf#94)
-
+# terraform-github-repository
 ## Providers
 
 | Name | Version |

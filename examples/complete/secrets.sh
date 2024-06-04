@@ -2,7 +2,6 @@
 
 # Define environments
 environments=("sandbox" "development" "staging" "production")
-
 # Check for arguments
 if [ "$#" -eq 1 ]; then
     operation=$1
@@ -31,6 +30,7 @@ if [ "$operation" == "-e" ]; then
         rm -f "$decrypted_file"
         git add "$encrypted_file"
         echo "Original file deleted."
+        exit 0
     else
         echo "Encryption failed."
         rm -f "$encrypted_file"
@@ -45,6 +45,7 @@ elif [ "$operation" == "-d" ]; then
         echo "Decryption successful."
         rm -f "$encrypted_file"
         echo "Encrypted file deleted."
+        exit 0
     else
         echo "Decryption failed."
         rm -f "$decrypted_file"

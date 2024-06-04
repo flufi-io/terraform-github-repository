@@ -4,8 +4,8 @@ formatter: markdown table  # this is required
 
 version: ""
 
-header-from: main.tf
-footer-from: ""
+header-from: "docs/HEADER.md"
+footer-from: "LICENSE.md"
 
 recursive:
   enabled: false

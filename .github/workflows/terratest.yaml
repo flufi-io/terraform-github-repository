@@ -12,7 +12,8 @@ permissions:
 
 jobs:
   terratest:
-    uses: flufi-io/workflows/.github/workflows/terratest.yaml@main
+    uses: flufi-io/workflows/.github/workflows/terratest.yaml@terratest
     with:
       ref: ${{ github.event.pull_request.head.sha }}
+      working-directory: examples/complete
     secrets: inherit

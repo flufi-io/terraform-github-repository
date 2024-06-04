@@ -17,7 +17,3 @@ stage = "module"
 
 visibility             = "private"
 status_checks_contexts = ["terratest"]
-secrets = {
-  SECRET_1 = "c2VjcmV0XzE="
-  SECRET_2 = "c2VjcmV0XzI="
-}
