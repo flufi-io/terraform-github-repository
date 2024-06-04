@@ -16,4 +16,5 @@ jobs:
     with:
       ref: ${{ github.event.pull_request.head.sha }}
       working-directory: examples/complete
-    secrets: inherit
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PAT }}
