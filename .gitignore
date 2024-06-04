@@ -8,8 +8,6 @@
 .terraform.lock.hcl
 !**/.terraform-docs.yml
 !.terraform-docs.yml
-**/go.*
-go.*
 .env
 **.external_modules/
 !**/example.tfvars.json
