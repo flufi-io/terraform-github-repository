@@ -22,7 +22,7 @@ func Test(t *testing.T) {
 	name := originalName + "-terratest-" + randHash
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "../../examples/complete/",
-		VarFiles:     []string{"fixtures.sandbox.tfvars.json", "terraform.tfvars.json"},
+		VarFiles:     []string{"secrets.sandbox.tfvars.json", "terraform.tfvars.json"},
 		Vars: map[string]interface{}{
 			"name": name,
 		},
