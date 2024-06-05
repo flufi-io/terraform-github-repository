@@ -67,3 +67,9 @@ variable "commit_author_email_pattern" {
   description = "The pattern that the author email of the commits must match to be accepted."
   default     = ""
 }
+
+variable "dependabot_environment" {
+  type        = string
+  description = "The environment to enable dependabot for"
+  default     = "sandbox"
+}

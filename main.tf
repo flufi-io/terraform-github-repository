@@ -94,25 +94,25 @@ resource "github_repository_environment" "this" {
 #   depends_on = [github_repository_environment.this]
 #
 #   repository       = github_repository.this.name
-#   environment_name = github_repository_environment.this.environment
+#   environment_name = module.this.environment
 #   name             = github_branch_default.main.branch
 # }
 
 resource "github_actions_environment_secret" "this" {
+  depends_on      = [github_repository_environment.this]
   for_each        = nonsensitive(keys(var.secrets)) != null ? toset(nonsensitive(keys(var.secrets))) : toset([])
-  environment     = github_repository_environment.this.environment
+  environment     = module.this.environment
   secret_name     = each.key
   encrypted_value = var.secrets[each.key]
   repository      = github_repository.this.name
 }
 
 resource "github_dependabot_secret" "this" {
-  for_each        = github_repository_environment.this.environment == "sandbox" && nonsensitive(keys(var.secrets)) != null ? toset(nonsensitive(keys(var.secrets))) : toset([])
+  for_each        = module.this.environment == var.dependabot_environment && nonsensitive(keys(var.secrets)) != null ? toset(nonsensitive(keys(var.secrets))) : toset([])
   secret_name     = each.key
   encrypted_value = var.secrets[each.key]
   repository      = github_repository.this.name
 }
-
 
 resource "github_repository_ruleset" "this" {
   repository  = github_repository.this.name

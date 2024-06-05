@@ -43,7 +43,7 @@ commit_author_email_pattern = "@flufi.io"
 - resource.github_actions_environment_secret.this (main.tf#101)
 - resource.github_branch_default.main (main.tf#28)
 - resource.github_branch_protection_v3.main (main.tf#58)
-- resource.github_dependabot_secret.this (main.tf#109)
+- resource.github_dependabot_secret.this (main.tf#110)
 - resource.github_repository.this (main.tf#1)
 - resource.github_repository_environment.this (main.tf#84)
 - resource.github_repository_ruleset.this (main.tf#117)
@@ -63,6 +63,7 @@ commit_author_email_pattern = "@flufi.io"
 | <a name="input_commit_author_email_pattern"></a> [commit\_author\_email\_pattern](#input\_commit\_author\_email\_pattern) | The pattern that the author email of the commits must match to be accepted. | `string` | `""` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "descriptor_formats": {},<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "labels_as_tags": [<br>    "unset"<br>  ],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {},<br>  "tenant": null<br>}</pre> | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between ID elements.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
+| <a name="input_dependabot_environment"></a> [dependabot\_environment](#input\_dependabot\_environment) | The environment to enable dependabot for | `string` | `"sandbox"` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description of the repository | `string` | `""` | no |
 | <a name="input_descriptor_formats"></a> [descriptor\_formats](#input\_descriptor\_formats) | Describe additional descriptors to be output in the `descriptors` output map.<br>Map of maps. Keys are names of descriptors. Values are maps of the form<br>`{<br>   format = string<br>   labels = list(string)<br>}`<br>(Type is `any` so the map values can later be enhanced to provide additional options.)<br>`format` is a Terraform format string to be passed to the `format()` function.<br>`labels` is a list of labels, in order, to pass to `format()` function.<br>Label values will be normalized before being passed to `format()` so they will be<br>identical to how they appear in `id`.<br>Default is `{}` (`descriptors` output will be empty). | `any` | `{}` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
