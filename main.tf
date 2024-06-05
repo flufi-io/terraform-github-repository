@@ -90,13 +90,13 @@ resource "github_repository_environment" "this" {
   }
 }
 
-resource "github_repository_deployment_branch_policy" "this" {
-  depends_on = [github_repository_environment.this]
-
-  repository       = github_repository.this.name
-  environment_name = github_repository_environment.this.environment
-  name             = "main"
-}
+# resource "github_repository_deployment_branch_policy" "this" {
+#   depends_on = [github_repository_environment.this]
+#
+#   repository       = github_repository.this.name
+#   environment_name = github_repository_environment.this.environment
+#   name             = github_branch_default.main.branch
+# }
 
 resource "github_actions_environment_secret" "this" {
   for_each        = toset(nonsensitive(keys(var.secrets)))
