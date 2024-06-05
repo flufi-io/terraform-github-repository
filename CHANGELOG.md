@@ -1,3 +1,17 @@
+## [2024-06-05]
+
+## Added
+
+- Added support for environment-specific secrets and variables.
+- Introduced `dependabot_environment` variable for enabling dependabot in specific environments.
+- Enhanced branch protection options with additional settings for pull request reviews.
+- Added support for GitHub Actions environment variables.
+
+## Changed
+
+- Updated GitHub provider version to 6.2.1.
+- Renamed `secrets` variable to `environment_secrets`.
+-
 ## 2024-06-05
 
 ### Added

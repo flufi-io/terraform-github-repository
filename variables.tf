@@ -18,11 +18,19 @@ variable "status_checks_contexts" {
 variable "required_pull_request_reviews" {
   default = null
   type = object({
-    dismissal_teams                 = optional(list(string))
-    dismissal_users                 = optional(list(string))
-    dismiss_stale_reviews           = optional(bool)
-    require_code_owner_reviews      = optional(bool)
-    required_approving_review_count = optional(number)
+    dismissal_teams                   = optional(list(string))
+    dismissal_users                   = optional(list(string))
+    dismissal_apps                    = optional(list(string))
+    dismiss_stale_reviews             = optional(bool)
+    require_code_owner_reviews        = optional(bool)
+    required_approving_review_count   = optional(number)
+    require_last_push_approval        = optional(bool, false)
+    required_review_thread_resolution = optional(bool)
+    bypass_pull_request_allowances = optional(object({
+      users = optional(list(string))
+      teams = optional(list(string))
+      apps  = optional(list(string))
+    }))
   })
   description = "Branch protection options to require PR reviews."
 }
@@ -36,13 +44,17 @@ variable "required_pull_request_reviews" {
 #   description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
 # }
 
-variable "secrets" {
-  description = "Secrets to be stored in the repository secrets"
+variable "environment_secrets" {
+  description = "Secrets to be stored in the repository for the environment"
   type        = map(string)
   sensitive   = true
-  default     = null
+  default     = {}
 }
-
+variable "environment_variables" {
+  description = "Variables to be stored in the repository for the environment"
+  type        = map(string)
+  default     = {}
+}
 variable "template" {
   description = "Template repository to use for this repository"
   default     = null
@@ -66,4 +78,10 @@ variable "commit_author_email_pattern" {
   type        = string
   description = "The pattern that the author email of the commits must match to be accepted."
   default     = ""
+}
+
+variable "dependabot_environment" {
+  type        = string
+  description = "The environment to enable dependabot for"
+  default     = "sandbox"
 }
