@@ -59,15 +59,15 @@ required_pull_request_reviews = {
 ```
 ## Resources
 
-- resource.github_actions_environment_secret.this (main.tf#112)
-- resource.github_actions_environment_variable.this (main.tf#120)
-- resource.github_branch_default.main (main.tf#28)
-- resource.github_branch_protection_v3.main (main.tf#58)
-- resource.github_dependabot_secret.this (main.tf#128)
+- resource.github_actions_environment_secret.this (main.tf#113)
+- resource.github_actions_environment_variable.this (main.tf#121)
+- resource.github_branch_default.main (main.tf#29)
+- resource.github_branch_protection_v3.main (main.tf#59)
+- resource.github_dependabot_secret.this (main.tf#129)
 - resource.github_repository.this (main.tf#1)
-- resource.github_repository_environment.this (main.tf#95)
-- resource.github_repository_ruleset.tag (main.tf#180)
-- resource.github_repository_ruleset.this (main.tf#135)
+- resource.github_repository_environment.this (main.tf#96)
+- resource.github_repository_ruleset.tag (main.tf#181)
+- resource.github_repository_ruleset.this (main.tf#136)
 # terraform-github-repository
 ## Providers
 
