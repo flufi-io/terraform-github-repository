@@ -1,6 +1,7 @@
 variable "description" {
   type        = string
   description = "Description of the repository"
+  default     = "This is a test repository"
 }
 variable "visibility" {
   type        = string
@@ -16,6 +17,7 @@ variable "secrets" {
 variable "archive_on_destroy" {
   type        = bool
   description = "Set to true to archive the repository instead of deleting it."
+  default     = true # this is an example
 }
 variable "status_checks_contexts" {
   default     = []
@@ -44,17 +46,20 @@ variable "required_pull_request_reviews" {
 #}
 
 variable "required_deployment_environments" {
+  default     = ["sandbox"]
   type        = list(string)
   description = "The list of environments that must be deployed to from this branch before it can be merged into the destination branch."
+}
+
+
+variable "commit_author_email_pattern" {
+  type        = string
+  description = "The pattern that the author email of the commits must match to be accepted."
+  default     = "@flufi.io"
 }
 
 variable "github_token" {
   type        = string
   description = "Github Personal Access Token"
   sensitive   = true
-}
-variable "commit_author_email_pattern" {
-  type        = string
-  description = "The pattern that the author email of the commits must match to be accepted."
-  default     = ""
 }

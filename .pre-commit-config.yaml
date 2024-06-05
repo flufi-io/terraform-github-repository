@@ -20,7 +20,7 @@ repos:
         files: (\.terraform\.lock\.hcl)$
         exclude: ^\.terraform/.*$|^.*/\.terraform/.*$|^\.external_modules/.*$|^.*/\.external_modules/.*$
         args:
-          - --hook-config=--mode=only-check-is-current-lockfile-cross-platform
+          - --hook-config=--mode=only-check-is-current-lockfile-cross-platform # Ensures the lockfile is current and cross-platform compatible
 
       - id: terraform_validate
         name: Terraform validate
