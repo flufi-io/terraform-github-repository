@@ -23,6 +23,11 @@ variable "required_pull_request_reviews" {
     dismiss_stale_reviews           = optional(bool)
     require_code_owner_reviews      = optional(bool)
     required_approving_review_count = optional(number)
+    bypass_pull_request_allowances = optional(object({
+      users = optional(list(string))
+      teams = optional(list(string))
+      apps  = optional(list(string))
+    }))
   })
   description = "Branch protection options to require PR reviews."
 }
