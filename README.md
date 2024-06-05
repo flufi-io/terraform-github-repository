@@ -45,7 +45,6 @@ commit_author_email_pattern = "@flufi.io"
 - resource.github_branch_protection_v3.main (main.tf#58)
 - resource.github_dependabot_secret.this (main.tf#109)
 - resource.github_repository.this (main.tf#1)
-- resource.github_repository_deployment_branch_policy.this (main.tf#93)
 - resource.github_repository_environment.this (main.tf#84)
 - resource.github_repository_ruleset.this (main.tf#117)
 # terraform-github-repository
