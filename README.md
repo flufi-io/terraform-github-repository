@@ -66,6 +66,7 @@ required_pull_request_reviews = {
 - resource.github_dependabot_secret.this (main.tf#128)
 - resource.github_repository.this (main.tf#1)
 - resource.github_repository_environment.this (main.tf#95)
+- resource.github_repository_ruleset.tag (main.tf#173)
 - resource.github_repository_ruleset.this (main.tf#135)
 # terraform-github-repository
 ## Providers

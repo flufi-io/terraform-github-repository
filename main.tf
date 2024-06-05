@@ -139,13 +139,51 @@ resource "github_repository_ruleset" "this" {
   target      = "branch"
   conditions {
     ref_name {
+      include = ["~ALL"]
+      exclude = []
+    }
+  }
+  rules {
+    creation                = true
+    update                  = true
+    deletion                = true
+    required_linear_history = true
+    required_signatures     = true
+    non_fast_forward        = true
+    commit_author_email_pattern {
+      operator = "ends_with"
+      pattern  = var.commit_author_email_pattern
+    }
+
+    required_deployments {
+      required_deployment_environments = var.required_deployment_environments
+    }
+    required_status_checks {
+      dynamic "required_check" {
+        for_each = var.status_checks_contexts
+        content {
+          context = required_check.value
+        }
+      }
+      strict_required_status_checks_policy = true
+    }
+  }
+}
+
+resource "github_repository_ruleset" "tag" {
+  repository  = github_repository.this.name
+  enforcement = "active"
+  name        = "tags"
+  target      = "tag"
+  conditions {
+    ref_name {
       include = ["~DEFAULT_BRANCH"]
       exclude = []
     }
   }
   rules {
     creation                = true
-    update                  = false
+    update                  = true
     deletion                = true
     required_linear_history = true
     required_signatures     = true
