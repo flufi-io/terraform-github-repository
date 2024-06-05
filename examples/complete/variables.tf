@@ -18,7 +18,6 @@ variable "environment_variables" {
   description = "Variables to be stored in the repository for the environment"
   type        = map(string)
   default     = {}
-  sensitive   = true
 }
 variable "archive_on_destroy" {
   type        = bool

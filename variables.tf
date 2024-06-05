@@ -46,7 +46,6 @@ variable "environment_variables" {
   description = "Variables to be stored in the repository for the environment"
   type        = map(string)
   default     = {}
-  sensitive   = true
 }
 variable "template" {
   description = "Template repository to use for this repository"
