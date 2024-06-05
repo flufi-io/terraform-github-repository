@@ -7,7 +7,7 @@ plugin "terraform" {
 config {
   # Enables module inspection
   module = true
-  force  = false
+  force  = true
 }
 
 rule "terraform_comment_syntax" {
@@ -59,7 +59,7 @@ rule "terraform_unused_declarations" {
 }
 
 rule "terraform_unused_required_providers" {
-  enabled = false
+  enabled = true
 }
 
 rule "terraform_workspace_remote" {
@@ -67,7 +67,7 @@ rule "terraform_workspace_remote" {
 }
 
 rule "terraform_standard_module_structure" {
-  enabled = false
+  enabled = true
 }
 
 # Enforces naming conventions
@@ -89,15 +89,15 @@ rule "terraform_naming_convention" {
 
   #Allow any format
   resource {
-    format = "none"
+    format = "snake_case"
   }
 
   module {
-    format = "none"
+    format = "snake_case"
   }
 
   data {
-    format = "none"
+    format = "snake_case"
   }
 
 }

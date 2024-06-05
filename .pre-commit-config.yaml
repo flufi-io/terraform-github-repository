@@ -20,7 +20,7 @@ repos:
         files: (\.terraform\.lock\.hcl)$
         exclude: ^\.terraform/.*$|^.*/\.terraform/.*$|^\.external_modules/.*$|^.*/\.external_modules/.*$
         args:
-          - --hook-config=--mode=only-check-is-current-lockfile-cross-platform # Ensures the lockfile is current and cross-platform compatible
+          - --hook-config=--mode=only-check-is-current-lockfile-cross-platform  # Ensures the lockfile is current and cross-platform compatible
 
       - id: terraform_validate
         name: Terraform validate
@@ -65,7 +65,6 @@ repos:
 
   - repo: https://github.com/bridgecrewio/checkov.git
     rev: '3.2.107'
-    exclude: ^\.terraform/.*$|^.*/\.terraform/.*$|^\.external_modules/.*$|^.*/\.external_modules/.*$|(context\.tf)$
     hooks:
       - id: checkov
         args:
