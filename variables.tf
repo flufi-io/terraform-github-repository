@@ -40,6 +40,7 @@ variable "secrets" {
   description = "Secrets to be stored in the repository secrets"
   type        = map(string)
   sensitive   = true
+  default     = null
 }
 
 variable "template" {

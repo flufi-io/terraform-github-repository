@@ -99,7 +99,7 @@ resource "github_repository_environment" "this" {
 # }
 
 resource "github_actions_environment_secret" "this" {
-  for_each        = toset(nonsensitive(keys(var.secrets)))
+  for_each        = nonsensitive(keys(var.secrets)) != null ? toset(nonsensitive(keys(var.secrets))) : toset([])
   environment     = github_repository_environment.this.environment
   secret_name     = each.key
   encrypted_value = var.secrets[each.key]
@@ -107,7 +107,7 @@ resource "github_actions_environment_secret" "this" {
 }
 
 resource "github_dependabot_secret" "this" {
-  for_each        = github_repository_environment.this.environment == "sandbox" ? toset(nonsensitive(keys(var.secrets))) : toset([])
+  for_each        = github_repository_environment.this.environment == "sandbox" && nonsensitive(keys(var.secrets)) != null ? toset(nonsensitive(keys(var.secrets))) : toset([])
   secret_name     = each.key
   encrypted_value = var.secrets[each.key]
   repository      = github_repository.this.name

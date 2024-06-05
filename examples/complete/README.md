@@ -57,6 +57,7 @@ variable "secrets" {
   description = "Secrets to be stored in the repository secrets"
   type        = map(string)
   sensitive   = true
+  default     = null
 }
 variable "archive_on_destroy" {
   type        = bool
@@ -114,7 +115,6 @@ variable "commit_author_email_pattern" {
 | <a name="input_description"></a> [description](#input\_description) | Description of the repository | `string` | n/a | yes |
 | <a name="input_github_token"></a> [github\_token](#input\_github\_token) | Github Personal Access Token | `string` | n/a | yes |
 | <a name="input_required_deployment_environments"></a> [required\_deployment\_environments](#input\_required\_deployment\_environments) | The list of environments that must be deployed to from this branch before it can be merged into the destination branch. | `list(string)` | n/a | yes |
-| <a name="input_secrets"></a> [secrets](#input\_secrets) | Secrets to be stored in the repository secrets | `map(string)` | n/a | yes |
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br>This is for some rare cases where resources want additional configuration of tags<br>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
 | <a name="input_commit_author_email_pattern"></a> [commit\_author\_email\_pattern](#input\_commit\_author\_email\_pattern) | The pattern that the author email of the commits must match to be accepted. | `string` | `""` | no |
@@ -132,6 +132,7 @@ variable "commit_author_email_pattern" {
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique | `string` | `null` | no |
 | <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Terraform regular expression (regex) string.<br>Characters matching the regex will be removed from the ID elements.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | <a name="input_required_pull_request_reviews"></a> [required\_pull\_request\_reviews](#input\_required\_pull\_request\_reviews) | Branch protection options to require PR reviews. | <pre>object({<br>    dismissal_teams                 = optional(list(string))<br>    dismissal_users                 = optional(list(string))<br>    dismiss_stale_reviews           = optional(bool)<br>    require_code_owner_reviews      = optional(bool)<br>    required_approving_review_count = optional(number)<br>  })</pre> | `null` | no |
+| <a name="input_secrets"></a> [secrets](#input\_secrets) | Secrets to be stored in the repository secrets | `map(string)` | `null` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_status_checks_contexts"></a> [status\_checks\_contexts](#input\_status\_checks\_contexts) | Contexts for the status\_checks branch protection | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `{'BusinessUnit': 'XYZ'}`).<br>Neither the tag keys nor the tag values will be modified by this module. | `map(string)` | `{}` | no |
