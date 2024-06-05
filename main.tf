@@ -155,6 +155,13 @@ resource "github_repository_ruleset" "this" {
       pattern  = var.commit_author_email_pattern
     }
 
+    pull_request {
+      dismiss_stale_reviews_on_push     = var.required_pull_request_reviews.dismiss_stale_reviews
+      require_code_owner_review         = var.required_pull_request_reviews.require_code_owner_reviews
+      required_approving_review_count   = var.required_pull_request_reviews.required_approving_review_count
+      require_last_push_approval        = var.required_pull_request_reviews.require_last_push_approval
+      required_review_thread_resolution = var.required_pull_request_reviews.required_review_thread_resolution
+    }
     required_deployments {
       required_deployment_environments = var.required_deployment_environments
     }
