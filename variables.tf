@@ -36,13 +36,18 @@ variable "required_pull_request_reviews" {
 #   description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
 # }
 
-variable "secrets" {
-  description = "Secrets to be stored in the repository secrets"
+variable "environment_secrets" {
+  description = "Secrets to be stored in the repository for the environment"
   type        = map(string)
   sensitive   = true
   default     = null
 }
-
+variable "environment_variables" {
+  description = "Variables to be stored in the repository for the environment"
+  type        = map(string)
+  default     = null
+  sensitive   = true
+}
 variable "template" {
   description = "Template repository to use for this repository"
   default     = null

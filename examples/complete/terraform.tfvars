@@ -18,3 +18,5 @@ stage = "module"
 visibility                  = "private"
 status_checks_contexts      = ["terratest"]
 commit_author_email_pattern = "@flufi.io"
+
+dependabot_environment = "sandbox"

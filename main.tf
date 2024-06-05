@@ -100,17 +100,24 @@ resource "github_repository_environment" "this" {
 
 resource "github_actions_environment_secret" "this" {
   depends_on      = [github_repository_environment.this]
-  for_each        = nonsensitive(keys(var.secrets)) != null ? toset(nonsensitive(keys(var.secrets))) : toset([])
+  for_each        = nonsensitive(keys(var.environment_secrets)) != null ? toset(nonsensitive(keys(var.environment_secrets))) : toset([])
   environment     = module.this.environment
   secret_name     = each.key
-  encrypted_value = var.secrets[each.key]
+  encrypted_value = var.environment_secrets[each.key]
   repository      = github_repository.this.name
 }
-
+resource "github_actions_environment_variable" "this" {
+  depends_on    = [github_repository_environment.this]
+  for_each      = keys(var.environment_variables) != null ? toset(keys(var.environment_variables)) : toset([])
+  environment   = module.this.environment
+  repository    = github_repository.this.name
+  value         = var.environment_variables[each.key]
+  variable_name = each.key
+}
 resource "github_dependabot_secret" "this" {
-  for_each        = module.this.environment == var.dependabot_environment && nonsensitive(keys(var.secrets)) != null ? toset(nonsensitive(keys(var.secrets))) : toset([])
+  for_each        = module.this.environment == var.dependabot_environment && nonsensitive(keys(var.environment_secrets)) != null ? toset(nonsensitive(keys(var.environment_secrets))) : toset([])
   secret_name     = each.key
-  encrypted_value = var.secrets[each.key]
+  encrypted_value = var.environment_secrets[each.key]
   repository      = github_repository.this.name
 }
 

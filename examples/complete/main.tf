@@ -1,7 +1,11 @@
 module "repository" {
-  source                           = "../../"
-  description                      = var.description
-  secrets                          = var.secrets
+  source              = "../../"
+  description         = var.description
+  environment_secrets = var.environment_secrets
+  environment_variables = {
+    "TERRAFORM" = "true"
+  }
+  dependabot_environment           = var.dependabot_environment
   visibility                       = var.visibility
   archive_on_destroy               = var.archive_on_destroy
   context                          = module.this.context

@@ -8,11 +8,17 @@ variable "visibility" {
   description = "Visibility of the repository"
   default     = "private"
 }
-variable "secrets" {
+variable "environment_secrets" {
   description = "Secrets to be stored in the repository secrets"
   type        = map(string)
   sensitive   = true
   default     = null
+}
+variable "environment_variables" {
+  description = "Variables to be stored in the repository for the environment"
+  type        = map(string)
+  default     = null
+  sensitive   = true
 }
 variable "archive_on_destroy" {
   type        = bool
@@ -62,4 +68,10 @@ variable "github_token" {
   type        = string
   description = "Github Personal Access Token"
   sensitive   = true
+}
+
+variable "dependabot_environment" {
+  type        = string
+  description = "The environment to enable dependabot for"
+  default     = "sandbox"
 }
