@@ -139,7 +139,7 @@ resource "github_repository_ruleset" "this" {
   target      = "branch"
   conditions {
     ref_name {
-      include = ["~ALL"]
+      include = ["~DEFAULT_BRANCH"]
       exclude = []
     }
   }
