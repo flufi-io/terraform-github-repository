@@ -7,6 +7,6 @@ permissions:
 
 jobs:
   pre-commit:
-    uses: flufi-io/workflows/.github/workflows/terraform_precommit.yaml@main
+    uses: flufi-io/workflows/.github/workflows/terraform_precommit.yaml@terratest
     with:
       ref: ${{ github.event.pull_request.head.sha }}
