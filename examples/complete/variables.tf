@@ -9,7 +9,7 @@ variable "visibility" {
 }
 variable "secrets" {
   description = "Secrets to be stored in the repository secrets"
-  type = map(string)
+  type        = map(string)
   sensitive   = true
 }
 variable "archive_on_destroy" {
@@ -17,18 +17,18 @@ variable "archive_on_destroy" {
   description = "Set to true to archive the repository instead of deleting it."
 }
 variable "status_checks_contexts" {
-  default = []
-  type = list(string)
+  default     = []
+  type        = list(string)
   description = "Contexts for the status_checks branch protection"
 }
 variable "required_pull_request_reviews" {
   default = null
   type = object({
-	dismissal_teams = optional(list(string))
-	dismissal_users = optional(list(string))
-	dismiss_stale_reviews = optional(bool)
-	require_code_owner_reviews = optional(bool)
-	required_approving_review_count = optional(number)
+    dismissal_teams                 = optional(list(string))
+    dismissal_users                 = optional(list(string))
+    dismiss_stale_reviews           = optional(bool)
+    require_code_owner_reviews      = optional(bool)
+    required_approving_review_count = optional(number)
   })
   description = "Branch protection options to require PR reviews."
 }
@@ -43,7 +43,7 @@ variable "required_pull_request_reviews" {
 #}
 
 variable "required_deployment_environments" {
-  type = list(string)
+  type        = list(string)
   description = "The list of environments that must be deployed to from this branch before it can be merged into the destination branch."
 }
 
@@ -51,4 +51,9 @@ variable "github_token" {
   type        = string
   description = "Github Personal Access Token"
   sensitive   = true
+}
+variable "commit_author_email_pattern" {
+  type        = string
+  description = "The pattern that the author email of the commits must match to be accepted."
+  default     = ""
 }

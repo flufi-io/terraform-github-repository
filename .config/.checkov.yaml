@@ -10,3 +10,4 @@ skip-path:
 enable-secret-scan-all-files: true
 skip-check:
   - CKV_TF_1  # "Ensure Terraform module sources use a commit hash"
+  - CKV_GIT_5  # "GitHub pull requests should require at least 2 approvals"

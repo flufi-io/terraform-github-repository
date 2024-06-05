@@ -14,6 +14,7 @@ module "repository" {
   status_checks_contexts           = var.status_checks_contexts
   required_pull_request_reviews    = var.required_pull_request_reviews
   required_deployment_environments = var.required_deployment_environments
+  commit_author_email_pattern      = var.commit_author_email_pattern
 }
 ## terraform.tfvars
 archive_on_destroy = "false"
@@ -33,22 +34,26 @@ required_deployment_environments = ["sandbox"]
 
 stage = "module"
 
-visibility             = "private"
-status_checks_contexts = ["terratest"]
+visibility                  = "private"
+status_checks_contexts      = ["terratest"]
+commit_author_email_pattern = "@flufi.io"
 ```
 ## Resources
 
-- resource.github_actions_environment_secret.this (main.tf#111)
+- resource.github_actions_environment_secret.this (main.tf#101)
 - resource.github_branch_default.main (main.tf#28)
-- resource.github_branch_protection.main (main.tf#33)
+- resource.github_branch_protection_v3.main (main.tf#58)
+- resource.github_dependabot_secret.this (main.tf#109)
 - resource.github_repository.this (main.tf#1)
-- resource.github_repository_environment.this (main.tf#94)
+- resource.github_repository_deployment_branch_policy.this (main.tf#93)
+- resource.github_repository_environment.this (main.tf#84)
+- resource.github_repository_ruleset.this (main.tf#117)
 # terraform-github-repository
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | 6.2.1 |
+| <a name="provider_github"></a> [github](#provider\_github) | 5.45.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -56,11 +61,11 @@ status_checks_contexts = ["terratest"]
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br>This is for some rare cases where resources want additional configuration of tags<br>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
 | <a name="input_archive_on_destroy"></a> [archive\_on\_destroy](#input\_archive\_on\_destroy) | Set to true to archive the repository instead of deleting it. | `bool` | `false` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
+| <a name="input_commit_author_email_pattern"></a> [commit\_author\_email\_pattern](#input\_commit\_author\_email\_pattern) | The pattern that the author email of the commits must match to be accepted. | `string` | `""` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "descriptor_formats": {},<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "labels_as_tags": [<br>    "unset"<br>  ],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {},<br>  "tenant": null<br>}</pre> | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between ID elements.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description of the repository | `string` | `""` | no |
 | <a name="input_descriptor_formats"></a> [descriptor\_formats](#input\_descriptor\_formats) | Describe additional descriptors to be output in the `descriptors` output map.<br>Map of maps. Keys are names of descriptors. Values are maps of the form<br>`{<br>   format = string<br>   labels = list(string)<br>}`<br>(Type is `any` so the map values can later be enhanced to provide additional options.)<br>`format` is a Terraform format string to be passed to the `format()` function.<br>`labels` is a list of labels, in order, to pass to `format()` function.<br>Label values will be normalized before being passed to `format()` so they will be<br>identical to how they appear in `id`.<br>Default is `{}` (`descriptors` output will be empty). | `any` | `{}` | no |
-| <a name="input_enable_branch_protection"></a> [enable\_branch\_protection](#input\_enable\_branch\_protection) | Enable the branch protection for the default(main) branch | `bool` | `true` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
 | <a name="input_id_length_limit"></a> [id\_length\_limit](#input\_id\_length\_limit) | Limit `id` to this many characters (minimum 6).<br>Set to `0` for unlimited length.<br>Set to `null` for keep the existing setting, which defaults to `0`.<br>Does not affect `id_full`. | `number` | `null` | no |

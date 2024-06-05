@@ -29,84 +29,74 @@ resource "github_branch_default" "main" {
   repository = github_repository.this.name
   branch     = "main"
 }
-
-resource "github_branch_protection" "main" {
-  repository_id  = github_repository.this.node_id
-  pattern        = "main"
-  enforce_admins = true
+#
+# resource "github_branch_protection" "main" {
+#   repository_id  = github_repository.this.node_id
+#   pattern        = "main"
+#   enforce_admins = true
+#   dynamic "required_status_checks" {
+#     for_each = var.status_checks_contexts == null ? toset([]) : toset([1])
+#     content {
+#       strict   = true
+#       contexts = var.status_checks_contexts
+#     }
+#   }
+#   #  dynamic "required_pull_request_reviews" {
+#   #    for_each = var.required_pull_request_reviews == null ? toset([]) : toset([1])
+#   #    content {
+#   #      dismiss_stale_reviews           = true
+#   #      require_code_owner_reviews      = var.required_pull_request_reviews.require_code_owner_reviews
+#   #      required_approving_review_count = var.required_pull_request_reviews.required_approving_review_count
+#   #      require_last_push_approval      = true
+#   #    }
+#   #  }
+#   required_linear_history = false
+#   require_signed_commits  = true
+#   allows_deletions        = false
+#   allows_force_pushes     = false
+# }
+resource "github_branch_protection_v3" "main" {
+  depends_on                      = [github_repository.this, github_branch_default.main]
+  repository                      = github_repository.this.name
+  branch                          = github_branch_default.main.branch
+  enforce_admins                  = true
+  require_signed_commits          = true
+  require_conversation_resolution = true
   dynamic "required_status_checks" {
     for_each = var.status_checks_contexts == null ? toset([]) : toset([1])
     content {
-      strict   = true
-      contexts = var.status_checks_contexts
+      strict = true
+      checks = var.status_checks_contexts
     }
   }
-  #  dynamic "required_pull_request_reviews" {
-  #    for_each = var.required_pull_request_reviews == null ? toset([]) : toset([1])
-  #    content {
-  #      dismiss_stale_reviews           = true
-  #      require_code_owner_reviews      = var.required_pull_request_reviews.require_code_owner_reviews
-  #      required_approving_review_count = var.required_pull_request_reviews.required_approving_review_count
-  #      require_last_push_approval      = true
-  #    }
-  #  }
-  required_linear_history = false
-  require_signed_commits  = true
-  allows_deletions        = false
-  allows_force_pushes     = false
+
+  dynamic "required_pull_request_reviews" {
+    for_each = var.required_pull_request_reviews == null ? toset([]) : toset([1])
+    content {
+      dismiss_stale_reviews           = var.required_pull_request_reviews.dismiss_stale_reviews
+      require_code_owner_reviews      = var.required_pull_request_reviews.require_code_owner_reviews
+      required_approving_review_count = var.required_pull_request_reviews.required_approving_review_count
+      dismissal_teams                 = var.required_pull_request_reviews.dismissal_teams
+      dismissal_users                 = var.required_pull_request_reviews.dismissal_users
+    }
+  }
 }
-#resource "github_branch_protection_v3" "main" {
-#  depends_on                      = [github_repository.this, github_branch_default.main]
-#  count                           = var.enable_branch_protection ? 1 : 0
-#  repository                      = github_repository.this.name
-#  branch                          = github_branch_default.main.branch
-#  enforce_admins                  = true
-#  require_signed_commits          = true
-#  require_conversation_resolution = true
-#  dynamic "required_status_checks" {
-#    for_each = var.status_checks_contexts == null ? toset([]) : toset([1])
-#    content {
-#      strict = true
-#      checks = var.status_checks_contexts
-#    }
-#  }
-#
-#  dynamic "required_pull_request_reviews" {
-#    for_each = var.required_pull_request_reviews == null ? toset([]) : toset([1])
-#    content {
-#      dismiss_stale_reviews           = var.required_pull_request_reviews.dismiss_stale_reviews
-#      require_code_owner_reviews      = var.required_pull_request_reviews.require_code_owner_reviews
-#      required_approving_review_count = var.required_pull_request_reviews.required_approving_review_count
-#      dismissal_teams                 = var.required_pull_request_reviews.dismissal_teams
-#      dismissal_users                 = var.required_pull_request_reviews.dismissal_users
-#    }
-#  }
-#
-#  dynamic "restrictions" {
-#    for_each = var.restrictions == null ? toset([]) : toset([1])
-#    content {
-#      users = var.restrictions.users
-#      teams = var.restrictions.teams
-#      apps  = var.restrictions.apps
-#    }
-#  }
-#}
 resource "github_repository_environment" "this" {
   environment = module.this.environment
   repository  = github_repository.this.name
-  #  deployment_branch_policy {
-  #    protected_branches     = true
-  #    custom_branch_policies = false
-  #  }
+  deployment_branch_policy {
+    protected_branches     = true
+    custom_branch_policies = false
+  }
 }
 
-#resource "github_repository_deployment_branch_policy" "this" {
-#  depends_on = [github_repository_environment.this]
-#
-#  repository       = github_repository.this.name
-#  environment_name = github_repository_environment.this.environment
-#  name             = "main"
-#}
+resource "github_repository_deployment_branch_policy" "this" {
+  depends_on = [github_repository_environment.this]
+
+  repository       = github_repository.this.name
+  environment_name = github_repository_environment.this.environment
+  name             = "main"
+}
 
 resource "github_actions_environment_secret" "this" {
   for_each        = toset(nonsensitive(keys(var.secrets)))
@@ -116,51 +106,55 @@ resource "github_actions_environment_secret" "this" {
   repository      = github_repository.this.name
 }
 
-# resource "github_dependabot_secret" "this" {
-#   for_each        = github_repository_environment.this.environment == "sandbox" ? var.secrets : {}
-#   secret_name     = var.secrets.keys[each.key]
-#   encrypted_value = var.secrets.values[each.key]
-#   repository      = github_repository.this.name
-# }
+resource "github_dependabot_secret" "this" {
+  for_each        = github_repository_environment.this.environment == "sandbox" ? toset(nonsensitive(keys(var.secrets))) : toset([])
+  secret_name     = each.key
+  encrypted_value = var.secrets[each.key]
+  repository      = github_repository.this.name
+}
 
 
-# resource "github_repository_ruleset" "this" {
-#   repository  = github_repository.this.name
-#   enforcement = "active"
-#   name        = "main"
-#   target      = "branch"
-#   conditions {
-#     ref_name {
-#       include = ["~DEFAULT_BRANCH"]
-#       exclude = []
-#     }
-#   }
-#   rules {
-#     creation                = true
-#     update                  = false
-#     deletion                = true
-#     required_linear_history = false
-#     required_signatures     = true
-#     non_fast_forward        = true
-#
-#     #    pull_request {
-#     #      dismiss_stale_reviews_on_push     = true
-#     #      require_code_owner_review         = var.required_pull_request_reviews.require_code_owner_reviews
-#     #      required_approving_review_count   = var.required_pull_request_reviews.required_approving_review_count
-#     #      require_last_push_approval        = true
-#     #      required_review_thread_resolution = true
-#     #    }
-#     required_deployments {
-#       required_deployment_environments = var.required_deployment_environments
-#     }
-#     required_status_checks {
-#       dynamic "required_check" {
-#         for_each = var.status_checks_contexts
-#         content {
-#           context = required_check.value
-#         }
-#       }
-#       strict_required_status_checks_policy = true
-#     }
-#   }
-# }
+resource "github_repository_ruleset" "this" {
+  repository  = github_repository.this.name
+  enforcement = "active"
+  name        = github_branch_default.main.branch
+  target      = "branch"
+  conditions {
+    ref_name {
+      include = ["~DEFAULT_BRANCH"]
+      exclude = []
+    }
+  }
+  rules {
+    creation                = true
+    update                  = false
+    deletion                = true
+    required_linear_history = true
+    required_signatures     = true
+    non_fast_forward        = true
+    commit_author_email_pattern {
+      operator = "ends_with"
+      pattern  = var.commit_author_email_pattern
+    }
+
+    #    pull_request {
+    #      dismiss_stale_reviews_on_push     = true
+    #      require_code_owner_review         = var.required_pull_request_reviews.require_code_owner_reviews
+    #      required_approving_review_count   = var.required_pull_request_reviews.required_approving_review_count
+    #      require_last_push_approval        = true
+    #      required_review_thread_resolution = true
+    #    }
+    required_deployments {
+      required_deployment_environments = var.required_deployment_environments
+    }
+    required_status_checks {
+      dynamic "required_check" {
+        for_each = var.status_checks_contexts
+        content {
+          context = required_check.value
+        }
+      }
+      strict_required_status_checks_policy = true
+    }
+  }
+}

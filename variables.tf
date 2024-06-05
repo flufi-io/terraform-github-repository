@@ -10,12 +10,6 @@ variable "visibility" {
   default     = "private"
 }
 
-variable "enable_branch_protection" {
-  type        = bool
-  description = "Enable the branch protection for the default(main) branch"
-  default     = true
-}
-
 variable "status_checks_contexts" {
   default     = []
   type        = list(string)
@@ -66,4 +60,9 @@ variable "required_deployment_environments" {
   default     = []
   type        = list(string)
   description = "The list of environments that must be deployed to from this branch before it can be merged into the destination branch."
+}
+variable "commit_author_email_pattern" {
+  type        = string
+  description = "The pattern that the author email of the commits must match to be accepted."
+  default     = ""
 }

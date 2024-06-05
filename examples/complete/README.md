@@ -15,6 +15,7 @@ module "repository" {
   status_checks_contexts           = var.status_checks_contexts
   required_pull_request_reviews    = var.required_pull_request_reviews
   required_deployment_environments = var.required_deployment_environments
+  commit_author_email_pattern      = var.commit_author_email_pattern
 }
 ```
 ```hcl
@@ -36,8 +37,9 @@ required_deployment_environments = ["sandbox"]
 
 stage = "module"
 
-visibility             = "private"
-status_checks_contexts = ["terratest"]
+visibility                  = "private"
+status_checks_contexts      = ["terratest"]
+commit_author_email_pattern = "@flufi.io"
 ```
 
 ```hcl
@@ -90,6 +92,17 @@ variable "required_deployment_environments" {
   type        = list(string)
   description = "The list of environments that must be deployed to from this branch before it can be merged into the destination branch."
 }
+
+variable "github_token" {
+  type        = string
+  description = "Github Personal Access Token"
+  sensitive   = true
+}
+variable "commit_author_email_pattern" {
+  type        = string
+  description = "The pattern that the author email of the commits must match to be accepted."
+  default     = ""
+}
 ```
 # terraform-github-repository
 
@@ -99,10 +112,12 @@ variable "required_deployment_environments" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_archive_on_destroy"></a> [archive\_on\_destroy](#input\_archive\_on\_destroy) | Set to true to archive the repository instead of deleting it. | `bool` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description of the repository | `string` | n/a | yes |
+| <a name="input_github_token"></a> [github\_token](#input\_github\_token) | Github Personal Access Token | `string` | n/a | yes |
 | <a name="input_required_deployment_environments"></a> [required\_deployment\_environments](#input\_required\_deployment\_environments) | The list of environments that must be deployed to from this branch before it can be merged into the destination branch. | `list(string)` | n/a | yes |
 | <a name="input_secrets"></a> [secrets](#input\_secrets) | Secrets to be stored in the repository secrets | `map(string)` | n/a | yes |
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br>This is for some rare cases where resources want additional configuration of tags<br>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
+| <a name="input_commit_author_email_pattern"></a> [commit\_author\_email\_pattern](#input\_commit\_author\_email\_pattern) | The pattern that the author email of the commits must match to be accepted. | `string` | `""` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "descriptor_formats": {},<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "labels_as_tags": [<br>    "unset"<br>  ],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {},<br>  "tenant": null<br>}</pre> | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between ID elements.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | <a name="input_descriptor_formats"></a> [descriptor\_formats](#input\_descriptor\_formats) | Describe additional descriptors to be output in the `descriptors` output map.<br>Map of maps. Keys are names of descriptors. Values are maps of the form<br>`{<br>   format = string<br>   labels = list(string)<br>}`<br>(Type is `any` so the map values can later be enhanced to provide additional options.)<br>`format` is a Terraform format string to be passed to the `format()` function.<br>`labels` is a list of labels, in order, to pass to `format()` function.<br>Label values will be normalized before being passed to `format()` so they will be<br>identical to how they appear in `id`.<br>Default is `{}` (`descriptors` output will be empty). | `any` | `{}` | no |
