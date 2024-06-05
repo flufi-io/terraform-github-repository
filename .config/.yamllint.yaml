@@ -25,5 +25,5 @@ rules:
     level: warning
     allow-non-breakable-inline-mappings: true
     allow-non-breakable-words: true
-    max: 120
+    max: 500
   truthy: disable

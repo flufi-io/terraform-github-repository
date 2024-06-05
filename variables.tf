@@ -1,18 +1,13 @@
 variable "description" {
   type        = string
   description = "Description of the repository"
+  default     = ""
 }
 
 variable "visibility" {
   type        = string
   description = "Visibility of the repository"
   default     = "private"
-}
-
-variable "enable_branch_protection" {
-  type        = bool
-  description = "Enable the branch protection for the default(main) branch"
-  default     = true
 }
 
 variable "status_checks_contexts" {
@@ -31,20 +26,21 @@ variable "required_pull_request_reviews" {
   })
   description = "Branch protection options to require PR reviews."
 }
-variable "restrictions" {
-  type = object({
-    teams = optional(list(string))
-    users = optional(list(string))
-    apps  = optional(list(string))
-  })
-  default     = null
-  description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
-}
+# variable "restrictions" {
+#   type = object({
+#     teams = optional(list(string))
+#     users = optional(list(string))
+#     apps  = optional(list(string))
+#   })
+#   default     = null
+#   description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
+# }
 
 variable "secrets" {
-  description = "Secrets to add to the repository"
-  default     = {}
+  description = "Secrets to be stored in the repository secrets"
   type        = map(string)
+  sensitive   = true
+  default     = null
 }
 
 variable "template" {
@@ -62,6 +58,12 @@ variable "archive_on_destroy" {
   default     = false
 }
 variable "required_deployment_environments" {
+  default     = []
   type        = list(string)
   description = "The list of environments that must be deployed to from this branch before it can be merged into the destination branch."
+}
+variable "commit_author_email_pattern" {
+  type        = string
+  description = "The pattern that the author email of the commits must match to be accepted."
+  default     = ""
 }

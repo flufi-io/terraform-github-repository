@@ -1,52 +1,49 @@
 ---
-# terraform-docs configuration
-formatter: markdown table
+# .config/.terraform-docs.yml
+formatter: markdown table  # this is required
 
 version: ""
 
-header-from: main.tf
-footer-from: ""
+header-from: "docs/HEADER.md"
+footer-from: "LICENSE.md"
 
 recursive:
-  enabled: true
-  path: examples
+  enabled: false
 
 sections:
-  show:
-    - header
-    - inputs
-    - providers
-    - modules
-    - outputs
+  hide: []
+  show: []
 
-# content: ""
 content: |-
   # Examples
+  ## Complete
   ```hcl
-  # main.tf
+  ## main.tf
   {{ include "examples/complete/main.tf" }}
+  ## terraform.tfvars
+  {{ include "examples/complete/terraform.tfvars" }}
   ```
-  ```hcl
-  # terraform.tfvars.json
-  {{ include "examples/complete/example.tfvars.json" }}
-  ```
-  {{ .Header }}
-  {{ .Providers }}
-  {{ .Inputs }}
-  {{ .Outputs }}
   ## Resources
   {{ range .Module.Resources }}
   - {{ .GetMode }}.{{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
   {{- end }}
+  {{ .Header }}
+  {{ .Providers }}
+  {{ .Inputs }}
+  {{ .Outputs }}
+
 
 output:
-  file: README.md
+  file: "README.md"
   mode: inject
   template: |-
     <!-- BEGIN_TF_DOCS -->
     {{ .Content }}
     <!-- END_TF_DOCS -->
 
+output-values:
+  enabled: false
+  from: ""
 
 sort:
   enabled: true
@@ -56,7 +53,7 @@ settings:
   anchor: true
   color: true
   default: true
-  description: false
+  description: true
   escape: true
   hide-empty: true
   html: true

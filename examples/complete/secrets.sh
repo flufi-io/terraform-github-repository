@@ -2,7 +2,6 @@
 
 # Define environments
 environments=("sandbox" "development" "staging" "production")
-
 # Check for arguments
 if [ "$#" -eq 1 ]; then
     operation=$1
@@ -17,8 +16,8 @@ fi
 # Function to perform sops operation
 perform_sops_operation() {
     local environment=$1
-    decrypted_file="fixtures.${environment}.tfvars.json"
-    encrypted_file="fixtures.${environment}.tfvars.enc.json"
+    decrypted_file="secrets.${environment}.tfvars.json"
+    encrypted_file="secrets.${environment}.tfvars.enc.json"
 
 # Perform sops operation and check if successful
 if [ "$operation" == "-e" ]; then
@@ -26,11 +25,12 @@ if [ "$operation" == "-e" ]; then
         echo "Encrypted file already exists. Skipping encryption."
         exit 0
     fi
-    if sops -e "$decrypted_file"  > "$encrypted_file"; then
+    if sops --verbose -e "$decrypted_file"  > "$encrypted_file"; then
         echo "Encryption successful."
         rm -f "$decrypted_file"
         git add "$encrypted_file"
         echo "Original file deleted."
+        exit 0
     else
         echo "Encryption failed."
         rm -f "$encrypted_file"
@@ -41,10 +41,11 @@ elif [ "$operation" == "-d" ]; then
         echo "Decrypted file already exists. Skipping decryption."
         exit 0
     fi
-    if sops --ignore-mac -d "$encrypted_file" > "$decrypted_file"; then
+    if sops --verbose --ignore-mac -d "$encrypted_file" > "$decrypted_file"; then
         echo "Decryption successful."
         rm -f "$encrypted_file"
         echo "Encrypted file deleted."
+        exit 0
     else
         echo "Decryption failed."
         rm -f "$decrypted_file"

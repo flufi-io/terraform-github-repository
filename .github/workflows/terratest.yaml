@@ -3,17 +3,16 @@ name: terratest
 
 on:
   pull_request:
-    branches:
-      - '*'
-
 
 permissions:
-  id-token: write
   contents: read
+  pull-requests: write
+  id-token: write  # This is required to use the AWS Credentials
+
 
 jobs:
   terratest:
-    uses: flufi-io/workflows/.github/workflows/terratest.yaml@main
+    uses: flufi-io/workflows/.github/workflows/terratest.yaml@terratest
     with:
       ref: ${{ github.event.pull_request.head.sha }}
-    secrets: inherit
+      working-directory: examples/complete

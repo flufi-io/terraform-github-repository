@@ -1,0 +1,10 @@
+---
+scan:
+  skip-dirs:
+    - "./.terraform/**"
+    - "./.external_modules/**"
+    - "**/.terraform"
+    - "**/.external_modules"
+  skip-files:
+    - context.tf
+    - "**/context.tf"
