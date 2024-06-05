@@ -96,7 +96,7 @@ resource "github_repository_environment" "this" {
   environment = module.this.environment
   repository  = github_repository.this.name
   deployment_branch_policy {
-    protected_branches     = true
+    protected_branches     = false
     custom_branch_policies = false
   }
 }
