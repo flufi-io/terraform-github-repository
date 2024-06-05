@@ -12,12 +12,12 @@ variable "environment_secrets" {
   description = "Secrets to be stored in the repository secrets"
   type        = map(string)
   sensitive   = true
-  default     = null
+  default     = {}
 }
 variable "environment_variables" {
   description = "Variables to be stored in the repository for the environment"
   type        = map(string)
-  default     = null
+  default     = {}
   sensitive   = true
 }
 variable "archive_on_destroy" {
