@@ -11,7 +11,7 @@
 
 - Updated GitHub provider version to 6.2.1.
 - Renamed `secrets` variable to `environment_secrets`.
-- 
+-
 ## 2024-06-05
 
 ### Added
