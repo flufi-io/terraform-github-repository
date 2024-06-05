@@ -20,6 +20,7 @@ variable "required_pull_request_reviews" {
   type = object({
     dismissal_teams                 = optional(list(string))
     dismissal_users                 = optional(list(string))
+    dismissal_apps                  = optional(list(string))
     dismiss_stale_reviews           = optional(bool)
     require_code_owner_reviews      = optional(bool)
     required_approving_review_count = optional(number)
