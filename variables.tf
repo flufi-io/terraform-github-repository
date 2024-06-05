@@ -18,12 +18,14 @@ variable "status_checks_contexts" {
 variable "required_pull_request_reviews" {
   default = null
   type = object({
-    dismissal_teams                 = optional(list(string))
-    dismissal_users                 = optional(list(string))
-    dismissal_apps                  = optional(list(string))
-    dismiss_stale_reviews           = optional(bool)
-    require_code_owner_reviews      = optional(bool)
-    required_approving_review_count = optional(number)
+    dismissal_teams                   = optional(list(string))
+    dismissal_users                   = optional(list(string))
+    dismissal_apps                    = optional(list(string))
+    dismiss_stale_reviews             = optional(bool)
+    require_code_owner_reviews        = optional(bool)
+    required_approving_review_count   = optional(number)
+    require_last_push_approval        = optional(bool, false)
+    required_review_thread_resolution = optional(bool)
     bypass_pull_request_allowances = optional(object({
       users = optional(list(string))
       teams = optional(list(string))

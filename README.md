@@ -46,20 +46,20 @@ dependabot_environment = "sandbox"
 ```
 ## Resources
 
-- resource.github_actions_environment_secret.this (main.tf#111)
-- resource.github_actions_environment_variable.this (main.tf#119)
+- resource.github_actions_environment_secret.this (main.tf#112)
+- resource.github_actions_environment_variable.this (main.tf#120)
 - resource.github_branch_default.main (main.tf#28)
 - resource.github_branch_protection_v3.main (main.tf#58)
-- resource.github_dependabot_secret.this (main.tf#127)
+- resource.github_dependabot_secret.this (main.tf#128)
 - resource.github_repository.this (main.tf#1)
-- resource.github_repository_environment.this (main.tf#94)
-- resource.github_repository_ruleset.this (main.tf#134)
+- resource.github_repository_environment.this (main.tf#95)
+- resource.github_repository_ruleset.this (main.tf#135)
 # terraform-github-repository
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | 5.45.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | 6.2.1 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -86,7 +86,7 @@ dependabot_environment = "sandbox"
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique | `string` | `null` | no |
 | <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Terraform regular expression (regex) string.<br>Characters matching the regex will be removed from the ID elements.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | <a name="input_required_deployment_environments"></a> [required\_deployment\_environments](#input\_required\_deployment\_environments) | The list of environments that must be deployed to from this branch before it can be merged into the destination branch. | `list(string)` | `[]` | no |
-| <a name="input_required_pull_request_reviews"></a> [required\_pull\_request\_reviews](#input\_required\_pull\_request\_reviews) | Branch protection options to require PR reviews. | <pre>object({<br>    dismissal_teams                 = optional(list(string))<br>    dismissal_users                 = optional(list(string))<br>    dismissal_apps                  = optional(list(string))<br>    dismiss_stale_reviews           = optional(bool)<br>    require_code_owner_reviews      = optional(bool)<br>    required_approving_review_count = optional(number)<br>    bypass_pull_request_allowances = optional(object({<br>      users = optional(list(string))<br>      teams = optional(list(string))<br>      apps  = optional(list(string))<br>    }))<br>  })</pre> | `null` | no |
+| <a name="input_required_pull_request_reviews"></a> [required\_pull\_request\_reviews](#input\_required\_pull\_request\_reviews) | Branch protection options to require PR reviews. | <pre>object({<br>    dismissal_teams                   = optional(list(string))<br>    dismissal_users                   = optional(list(string))<br>    dismissal_apps                    = optional(list(string))<br>    dismiss_stale_reviews             = optional(bool)<br>    require_code_owner_reviews        = optional(bool)<br>    required_approving_review_count   = optional(number)<br>    require_last_push_approval        = optional(bool, false)<br>    required_review_thread_resolution = optional(bool)<br>    bypass_pull_request_allowances = optional(object({<br>      users = optional(list(string))<br>      teams = optional(list(string))<br>      apps  = optional(list(string))<br>    }))<br>  })</pre> | `null` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_status_checks_contexts"></a> [status\_checks\_contexts](#input\_status\_checks\_contexts) | Contexts for the status\_checks branch protection | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `{'BusinessUnit': 'XYZ'}`).<br>Neither the tag keys nor the tag values will be modified by this module. | `map(string)` | `{}` | no |
