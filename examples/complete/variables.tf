@@ -35,11 +35,11 @@ variable "required_pull_request_reviews" {
     dismissal_teams                   = optional(list(string))
     dismissal_users                   = optional(list(string))
     dismissal_apps                    = optional(list(string))
-    dismiss_stale_reviews             = optional(bool)
-    require_code_owner_reviews        = optional(bool)
+    dismiss_stale_reviews             = optional(bool, false)
+    require_code_owner_reviews        = optional(bool, true)
     required_approving_review_count   = optional(number)
     require_last_push_approval        = optional(bool, false)
-    required_review_thread_resolution = optional(bool)
+    required_review_thread_resolution = optional(bool, true)
     bypass_pull_request_allowances = optional(object({
       users = optional(list(string))
       teams = optional(list(string))
@@ -64,7 +64,6 @@ variable "required_deployment_environments" {
   description = "The list of environments that must be deployed to from this branch before it can be merged into the destination branch."
 }
 
-
 variable "commit_author_email_pattern" {
   type        = string
   description = "The pattern that the author email of the commits must match to be accepted."
@@ -72,9 +71,12 @@ variable "commit_author_email_pattern" {
 }
 
 variable "github_token" {
-  type        = string
   description = "Github Personal Access Token"
   sensitive   = true
+  validation {
+    condition     = length(var.github_token) > 0
+    error_message = "The github_token variable must not be empty."
+  }
 }
 
 variable "dependabot_environment" {
