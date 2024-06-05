@@ -8,12 +8,13 @@ resource "github_repository" "this" {
   has_projects           = true
   has_wiki               = true
   allow_merge_commit     = true
-  allow_squash_merge     = true
-  allow_rebase_merge     = true
+  allow_squash_merge     = false
+  allow_rebase_merge     = false
   delete_branch_on_merge = true
   allow_auto_merge       = true
   allow_update_branch    = true
   archive_on_destroy     = var.archive_on_destroy
+  web_commit_signoff_required = false
   dynamic "template" {
     for_each = var.template == null ? toset([]) : toset([1])
     content {
