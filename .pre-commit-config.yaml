@@ -1,7 +1,7 @@
 ---
 repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.90.0  # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
+    rev: v1.96.2  # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
     hooks:
       - id: terraform_fmt
         name: Terraform fmt
@@ -64,7 +64,7 @@ repos:
           - --args=--config __GIT_WORKING_DIR__.config/.trivy.yaml
 
   - repo: https://github.com/bridgecrewio/checkov.git
-    rev: '3.2.107'
+    rev: '3.2.281'
     hooks:
       - id: checkov
         args:
@@ -78,7 +78,7 @@ repos:
           - --strict
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-merge-conflict
       - id: trailing-whitespace
