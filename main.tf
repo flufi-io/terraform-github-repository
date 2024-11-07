@@ -23,7 +23,6 @@ resource "github_repository" "this" {
       include_all_branches = var.template.include_all_branches
     }
   }
-
 }
 
 resource "github_branch_default" "main" {
@@ -102,13 +101,13 @@ resource "github_repository_environment" "this" {
   }
 }
 
-# resource "github_repository_deployment_branch_policy" "this" {
-#   depends_on = [github_repository_environment.this]
-#
-#   repository       = github_repository.this.name
-#   environment_name = module.this.environment
-#   name             = github_branch_default.main.branch
-# }
+resource "github_repository_deployment_branch_policy" "this" {
+  depends_on = [github_repository_environment.this]
+
+  repository       = github_repository.this.name
+  environment_name = module.this.environment
+  name             = github_branch_default.main.branch
+}
 
 resource "github_actions_environment_secret" "this" {
   depends_on      = [github_repository_environment.this]
@@ -118,6 +117,7 @@ resource "github_actions_environment_secret" "this" {
   encrypted_value = var.environment_secrets[each.key]
   repository      = github_repository.this.name
 }
+
 resource "github_actions_environment_variable" "this" {
   depends_on    = [github_repository_environment.this]
   for_each      = keys(var.environment_variables) != [] ? toset(keys(var.environment_variables)) : toset([])
@@ -126,6 +126,7 @@ resource "github_actions_environment_variable" "this" {
   value         = var.environment_variables[each.key]
   variable_name = each.key
 }
+
 resource "github_dependabot_secret" "this" {
   for_each        = module.this.environment == var.dependabot_environment && nonsensitive(keys(var.environment_secrets)) != null ? toset(nonsensitive(keys(var.environment_secrets))) : toset([])
   secret_name     = each.key
@@ -211,6 +212,28 @@ resource "github_repository_ruleset" "tag" {
         }
       }
       strict_required_status_checks_policy = true
+    }
+  }
+}
+
+
+resource "github_repository_collaborators" "collaborators" {
+  count      = length(var.collaborators_users) + length(var.collaborators_teams) != 0 ? 1 : 0
+  repository = github_repository.this.name
+
+  dynamic "user" {
+    for_each = var.collaborators_users
+    content {
+      permission = user.value.permission
+      username   = user.value.username
+    }
+  }
+
+  dynamic "team" {
+    for_each = var.collaborators_teams
+    content {
+      permission = team.value.permission
+      team_id    = team.value.slug
     }
   }
 }

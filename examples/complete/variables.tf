@@ -70,15 +70,6 @@ variable "commit_author_email_pattern" {
   default     = "@flufi.io"
 }
 
-variable "github_token" {
-  description = "Github Personal Access Token"
-  sensitive   = true
-  validation {
-    condition     = length(var.github_token) > 0
-    error_message = "The github_token variable must not be empty."
-  }
-}
-
 variable "dependabot_environment" {
   type        = string
   description = "The environment to enable dependabot for"

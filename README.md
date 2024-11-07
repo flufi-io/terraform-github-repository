@@ -11,7 +11,8 @@ module "repository" {
   environment_variables = {
     "TERRAFORM" = "true"
   }
-  dependabot_environment           = var.dependabot_environment
+  dependabot_environment = var.dependabot_environment
+  #checkov:skip=CKV_GIT_1:"Ensure GitHub repository is Private"
   visibility                       = var.visibility
   archive_on_destroy               = var.archive_on_destroy
   context                          = module.this.context
@@ -19,6 +20,7 @@ module "repository" {
   required_pull_request_reviews    = var.required_pull_request_reviews
   required_deployment_environments = var.required_deployment_environments
   commit_author_email_pattern      = var.commit_author_email_pattern
+  collaborators_users              = [{ username = "mnsanfilippo", permission = "admin" }]
 }
 ## terraform.tfvars
 archive_on_destroy = "false"
@@ -38,7 +40,7 @@ required_deployment_environments = ["sandbox"]
 
 stage = "module"
 
-visibility                  = "private"
+visibility                  = "public"
 status_checks_contexts      = ["terratest"]
 commit_author_email_pattern = "@flufi.io"
 
@@ -59,15 +61,17 @@ required_pull_request_reviews = {
 ```
 ## Resources
 
-- resource.github_actions_environment_secret.this (main.tf#113)
+- resource.github_actions_environment_secret.this (main.tf#112)
 - resource.github_actions_environment_variable.this (main.tf#121)
-- resource.github_branch_default.main (main.tf#29)
-- resource.github_branch_protection_v3.main (main.tf#59)
-- resource.github_dependabot_secret.this (main.tf#129)
+- resource.github_branch_default.main (main.tf#28)
+- resource.github_branch_protection_v3.main (main.tf#58)
+- resource.github_dependabot_secret.this (main.tf#130)
 - resource.github_repository.this (main.tf#1)
-- resource.github_repository_environment.this (main.tf#96)
-- resource.github_repository_ruleset.tag (main.tf#181)
-- resource.github_repository_ruleset.this (main.tf#136)
+- resource.github_repository_collaborators.collaborators (main.tf#220)
+- resource.github_repository_deployment_branch_policy.this (main.tf#104)
+- resource.github_repository_environment.this (main.tf#95)
+- resource.github_repository_ruleset.tag (main.tf#182)
+- resource.github_repository_ruleset.this (main.tf#137)
 # terraform-github-repository
 ## Providers
 
@@ -87,6 +91,8 @@ required_pull_request_reviews = {
 | <a name="input_archive_on_destroy"></a> [archive\_on\_destroy](#input\_archive\_on\_destroy) | Set to true to archive the repository instead of deleting it. | `bool` | `false` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br/>in the order they appear in the list. New attributes are appended to the<br/>end of the list. The elements of the list are joined by the `delimiter`<br/>and treated as a single ID element. | `list(string)` | `[]` | no |
 | <a name="input_auto_init"></a> [auto\_init](#input\_auto\_init) | Automatically initialize the repository with a README file. | `bool` | `true` | no |
+| <a name="input_collaborators_teams"></a> [collaborators\_teams](#input\_collaborators\_teams) | List of teams to add as collaborators | `list(object({ slug = string, permission = string }))` | `[]` | no |
+| <a name="input_collaborators_users"></a> [collaborators\_users](#input\_collaborators\_users) | List of users to add as collaborators | `list(object({ username = string, permission = string }))` | `[]` | no |
 | <a name="input_commit_author_email_pattern"></a> [commit\_author\_email\_pattern](#input\_commit\_author\_email\_pattern) | The pattern that the author email of the commits must match to be accepted. | `string` | `""` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br/>See description of individual variables for details.<br/>Leave string and numeric variables as `null` to use default value.<br/>Individual variable settings (non-null) override settings in context object,<br/>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br/>  "additional_tag_map": {},<br/>  "attributes": [],<br/>  "delimiter": null,<br/>  "descriptor_formats": {},<br/>  "enabled": true,<br/>  "environment": null,<br/>  "id_length_limit": null,<br/>  "label_key_case": null,<br/>  "label_order": [],<br/>  "label_value_case": null,<br/>  "labels_as_tags": [<br/>    "unset"<br/>  ],<br/>  "name": null,<br/>  "namespace": null,<br/>  "regex_replace_chars": null,<br/>  "stage": null,<br/>  "tags": {},<br/>  "tenant": null<br/>}</pre> | no |
 | <a name="input_delete_branch_on_merge"></a> [delete\_branch\_on\_merge](#input\_delete\_branch\_on\_merge) | Delete branches after merging pull requests. | `bool` | `true` | no |

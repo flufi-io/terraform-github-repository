@@ -15,7 +15,7 @@ required_deployment_environments = ["sandbox"]
 
 stage = "module"
 
-visibility                  = "private"
+visibility                  = "public"
 status_checks_contexts      = ["terratest"]
 commit_author_email_pattern = "@flufi.io"
 

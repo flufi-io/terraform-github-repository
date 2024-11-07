@@ -157,3 +157,14 @@ variable "dependabot_environment" {
   description = "The environment to enable dependabot for"
   default     = "sandbox"
 }
+
+variable "collaborators_users" {
+  type        = list(object({ username = string, permission = string }))
+  description = "List of users to add as collaborators"
+  default     = []
+}
+variable "collaborators_teams" {
+  type        = list(object({ slug = string, permission = string }))
+  description = "List of teams to add as collaborators"
+  default     = []
+}

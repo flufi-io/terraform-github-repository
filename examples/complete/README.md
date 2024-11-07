@@ -12,7 +12,8 @@ module "repository" {
   environment_variables = {
     "TERRAFORM" = "true"
   }
-  dependabot_environment           = var.dependabot_environment
+  dependabot_environment = var.dependabot_environment
+  #checkov:skip=CKV_GIT_1:"Ensure GitHub repository is Private"
   visibility                       = var.visibility
   archive_on_destroy               = var.archive_on_destroy
   context                          = module.this.context
@@ -20,6 +21,7 @@ module "repository" {
   required_pull_request_reviews    = var.required_pull_request_reviews
   required_deployment_environments = var.required_deployment_environments
   commit_author_email_pattern      = var.commit_author_email_pattern
+  collaborators_users              = [{ username = "mnsanfilippo", permission = "admin" }]
 }
 ```
 ```hcl
@@ -41,7 +43,7 @@ required_deployment_environments = ["sandbox"]
 
 stage = "module"
 
-visibility                  = "private"
+visibility                  = "public"
 status_checks_contexts      = ["terratest"]
 commit_author_email_pattern = "@flufi.io"
 
@@ -135,15 +137,6 @@ variable "commit_author_email_pattern" {
   default     = "@flufi.io"
 }
 
-variable "github_token" {
-  description = "Github Personal Access Token"
-  sensitive   = true
-  validation {
-    condition     = length(var.github_token) > 0
-    error_message = "The github_token variable must not be empty."
-  }
-}
-
 variable "dependabot_environment" {
   type        = string
   description = "The environment to enable dependabot for"
@@ -156,7 +149,6 @@ variable "dependabot_environment" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_github_token"></a> [github\_token](#input\_github\_token) | Github Personal Access Token | `any` | n/a | yes |
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br/>This is for some rare cases where resources want additional configuration of tags<br/>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
 | <a name="input_archive_on_destroy"></a> [archive\_on\_destroy](#input\_archive\_on\_destroy) | Set to true to archive the repository instead of deleting it. | `bool` | `true` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br/>in the order they appear in the list. New attributes are appended to the<br/>end of the list. The elements of the list are joined by the `delimiter`<br/>and treated as a single ID element. | `list(string)` | `[]` | no |
