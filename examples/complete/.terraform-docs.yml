@@ -2,20 +2,18 @@
 # terraform-docs configuration
 formatter: markdown table
 version: ""
-header-from: "../../docs/HEADER.md"
 footer-from: "../../LICENSE.md"
 recursive:
   enabled: false
 sections:
   show:
-    - header
     - inputs
     - providers
     - modules
     - outputs
+    - footer
 
 content: |-
-  {{ .Header }}
   # How to use this module
   ```hcl
   # main.tf
@@ -25,17 +23,7 @@ content: |-
   # terraform.tfvars
   {{ include "terraform.tfvars" }}
   ```
-  ```hcl
-  # variables.tf
-  {{ include "variables.tf" }}
-  ```
-  {{ .Providers }}
-  {{ .Inputs }}
-  {{ .Outputs }}
-  ## Resources
-  {{ range .Module.Resources }}
-  - {{ .GetMode }}.{{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
-  {{- end }}
+  {{ include "../../docs/sops.md" }}
   {{ .Footer }}
 
 output:
@@ -55,7 +43,7 @@ settings:
   color: true
   default: true
   description: false
-  escape: true
+  escape: false
   hide-empty: true
   html: true
   indent: 2

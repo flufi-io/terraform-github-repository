@@ -21,6 +21,8 @@ content: |-
   ```hcl
   ## main.tf
   {{ include "examples/complete/main.tf" }}
+  ```
+  ```hcl
   ## terraform.tfvars
   {{ include "examples/complete/terraform.tfvars" }}
   ```
@@ -56,7 +58,7 @@ settings:
   color: true
   default: true
   description: true
-  escape: true
+  escape: false
   hide-empty: true
   html: true
   indent: 2

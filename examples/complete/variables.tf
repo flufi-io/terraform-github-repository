@@ -48,15 +48,6 @@ variable "required_pull_request_reviews" {
   })
   description = "Branch protection options to require PR reviews."
 }
-#variable "restrictions" {
-#  type = object({
-#    teams = optional(list(string))
-#    users = optional(list(string))
-#    apps  = optional(list(string))
-#  })
-#  default     = null
-#  description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
-#}
 
 variable "required_deployment_environments" {
   default     = ["sandbox"]
