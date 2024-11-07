@@ -1,3 +1,15 @@
+## [2024-11-07]
+
+## Added
+- Introduced a Makefile for tool management and testing.
+- Added SOPS encryption/decryption script for managing secrets.
+- Included new variables for repository configuration, such as auto-init and collaborator settings.
+## Changed
+- Updated dependencies and pre-commit hooks to newer versions.
+- Modified repository settings to be configurable via variables.
+## Fixed
+- Corrected visibility settings and added missing configurations for repository management.
+
 ## [2024-06-05]
 
 ## Added
