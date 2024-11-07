@@ -2,19 +2,19 @@ resource "github_repository" "this" {
   name                        = module.this.name
   description                 = var.description
   visibility                  = var.visibility
-  auto_init                   = true
-  vulnerability_alerts        = true
-  has_issues                  = true
-  has_projects                = true
-  has_wiki                    = true
-  allow_merge_commit          = true
-  allow_squash_merge          = false
-  allow_rebase_merge          = false
-  delete_branch_on_merge      = true
-  allow_auto_merge            = true
-  allow_update_branch         = true
+  auto_init                   = var.auto_init
+  vulnerability_alerts        = var.vulnerability_alerts
+  has_issues                  = var.has_issues
+  has_projects                = var.has_projects
+  has_wiki                    = var.has_wiki
+  allow_merge_commit          = var.allow_auto_merge
+  allow_squash_merge          = var.allow_squash_merge
+  allow_rebase_merge          = var.allow_rebase_merge
+  delete_branch_on_merge      = var.delete_branch_on_merge
+  allow_auto_merge            = var.allow_auto_merge
+  allow_update_branch         = var.allow_update_branch
   archive_on_destroy          = var.archive_on_destroy
-  web_commit_signoff_required = true
+  web_commit_signoff_required = var.web_commit_signoff_required
   dynamic "template" {
     for_each = var.template == null ? toset([]) : toset([1])
     content {

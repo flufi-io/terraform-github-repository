@@ -10,6 +10,78 @@ variable "visibility" {
   default     = "private"
 }
 
+variable "auto_init" {
+  description = "Automatically initialize the repository with a README file."
+  type        = bool
+  default     = true
+}
+
+variable "vulnerability_alerts" {
+  description = "Enable vulnerability alerts for the repository."
+  type        = bool
+  default     = true
+}
+
+variable "has_issues" {
+  description = "Enable issues for the repository."
+  type        = bool
+  default     = true
+}
+
+variable "has_projects" {
+  description = "Enable projects for the repository."
+  type        = bool
+  default     = true
+}
+
+variable "has_wiki" {
+  description = "Enable wiki for the repository."
+  type        = bool
+  default     = true
+}
+
+variable "allow_merge_commit" {
+  description = "Allow merge commits for pull requests."
+  type        = bool
+  default     = true
+}
+
+variable "allow_squash_merge" {
+  description = "Allow squash merging for pull requests."
+  type        = bool
+  default     = false
+}
+
+variable "allow_rebase_merge" {
+  description = "Allow rebase merging for pull requests."
+  type        = bool
+  default     = false
+}
+
+variable "delete_branch_on_merge" {
+  description = "Delete branches after merging pull requests."
+  type        = bool
+  default     = true
+}
+
+variable "allow_auto_merge" {
+  description = "Allow auto-merge on pull requests."
+  type        = bool
+  default     = true
+}
+
+variable "allow_update_branch" {
+  description = "Allow branch updates before merging pull requests."
+  type        = bool
+  default     = true
+}
+
+variable "web_commit_signoff_required" {
+  description = "Require contributors to sign off on commits made through the web interface."
+  type        = bool
+  default     = true
+}
+
 variable "status_checks_contexts" {
   default     = []
   type        = list(string)
