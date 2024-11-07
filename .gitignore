@@ -4,11 +4,11 @@
 *.tfstate*
 **/.terraform
 .terraform
-**/.terraform.lock.hcl
-.terraform.lock.hcl
 !**/.terraform-docs.yml
 !.terraform-docs.yml
 .env
 **.external_modules/
 !**/example.tfvars.json
 *.tfvars.json
+
+!examples/complete/secrets.sandbox.tfvars.json

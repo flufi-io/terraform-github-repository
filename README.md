@@ -1,5 +1,60 @@
 
 <!-- BEGIN_TF_DOCS -->
+# terraform-github-repository
+
+## Makefile Usage
+
+A Makefile is included in this repository to simplify validation, installation, pre-commit checks, and testing.
+
+### Makefile Commands
+
+* `make check-tools`
+
+    This command verifies that all required tools are installed. If any tools are missing, it will notify you and suggest running make install-tools.
+* `make install-tools`
+
+  This command installs all necessary tools using Homebrew.
+* `make pre-commit`
+
+  Runs pre-commit hooks to check the code for formatting, style, and other issues. It will also install and update hooks as needed.
+* `make test`
+
+    Runs tests in a local environment. This command sets up the Go environment, initializes the Go module in the test directory, and executes tests with a timeout and single count.
+
+## Install and configure the tools
+````shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install jq
+brew install go
+brew install terraform-docs
+brew install pre-commit
+brew install trivy
+brew install checkov
+brew install tflint
+brew install tfenv
+````
+
+## How to test
+### Local test
+#### MacOs and Linux
+
+````shell
+# inside a test folder like /terraform-module-template/tests/complete
+export GOOS=darwin CGO_ENABLED=0 GOARCH=amd64
+# TIME_TO_DESTROY is the time in seconds between terraform apply and terraform destroy
+go mod init test
+go mod tidy
+TIME_TO_DESTROY=10 go test -v  -timeout 120m -count=1
+```
+
+## How to use pre-commit
+
+```shell
+# in the root of the module
+pre-commit autoupdate
+pre-commit install --install-hooks
+pre-commit run -a
+```
 # Examples
 ## Complete
 ```hcl
@@ -23,26 +78,19 @@ module "repository" {
   collaborators_users              = [{ username = "mnsanfilippo", permission = "admin" }]
 }
 ## terraform.tfvars
-archive_on_destroy = "false"
-
 description = "This is a test repository"
-
 environment = "sandbox"
-
 label_order = ["namespace", "stage", "name", "environment"]
+name        = "repository"
+namespace   = "flufi"
+stage       = "module"
 
-name = "repository"
-
-namespace = "flufi"
 
 required_deployment_environments = ["sandbox"]
-
-
-stage = "module"
-
-visibility                  = "public"
-status_checks_contexts      = ["terratest"]
-commit_author_email_pattern = "@flufi.io"
+archive_on_destroy               = "false"
+visibility                       = "public"
+status_checks_contexts           = ["terratest"]
+commit_author_email_pattern      = "@flufi.io"
 
 dependabot_environment = "sandbox"
 required_pull_request_reviews = {
@@ -61,18 +109,72 @@ required_pull_request_reviews = {
 ```
 ## Resources
 
-- resource.github_actions_environment_secret.this (main.tf#112)
-- resource.github_actions_environment_variable.this (main.tf#121)
+- resource.github_actions_environment_secret.this (main.tf#88)
+- resource.github_actions_environment_variable.this (main.tf#97)
 - resource.github_branch_default.main (main.tf#28)
-- resource.github_branch_protection_v3.main (main.tf#58)
-- resource.github_dependabot_secret.this (main.tf#130)
+- resource.github_branch_protection_v3.main (main.tf#33)
+- resource.github_dependabot_secret.this (main.tf#106)
 - resource.github_repository.this (main.tf#1)
-- resource.github_repository_collaborators.collaborators (main.tf#220)
-- resource.github_repository_deployment_branch_policy.this (main.tf#104)
-- resource.github_repository_environment.this (main.tf#95)
-- resource.github_repository_ruleset.tag (main.tf#182)
-- resource.github_repository_ruleset.this (main.tf#137)
+- resource.github_repository_collaborators.collaborators (main.tf#195)
+- resource.github_repository_deployment_branch_policy.this (main.tf#80)
+- resource.github_repository_environment.this (main.tf#71)
+- resource.github_repository_ruleset.tag (main.tf#158)
+- resource.github_repository_ruleset.this (main.tf#113)
 # terraform-github-repository
+
+## Makefile Usage
+
+A Makefile is included in this repository to simplify validation, installation, pre-commit checks, and testing.
+
+### Makefile Commands
+
+* `make check-tools`
+
+    This command verifies that all required tools are installed. If any tools are missing, it will notify you and suggest running make install-tools.
+* `make install-tools`
+
+  This command installs all necessary tools using Homebrew.
+* `make pre-commit`
+
+  Runs pre-commit hooks to check the code for formatting, style, and other issues. It will also install and update hooks as needed.
+* `make test`
+
+    Runs tests in a local environment. This command sets up the Go environment, initializes the Go module in the test directory, and executes tests with a timeout and single count.
+
+## Install and configure the tools
+````shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install jq
+brew install go
+brew install terraform-docs
+brew install pre-commit
+brew install trivy
+brew install checkov
+brew install tflint
+brew install tfenv
+````
+
+## How to test
+### Local test
+#### MacOs and Linux
+
+````shell
+# inside a test folder like /terraform-module-template/tests/complete
+export GOOS=darwin CGO_ENABLED=0 GOARCH=amd64
+# TIME_TO_DESTROY is the time in seconds between terraform apply and terraform destroy
+go mod init test
+go mod tidy
+TIME_TO_DESTROY=10 go test -v  -timeout 120m -count=1
+```
+
+## How to use pre-commit
+
+```shell
+# in the root of the module
+pre-commit autoupdate
+pre-commit install --install-hooks
+pre-commit run -a
+```
 ## Providers
 
 | Name | Version |
@@ -131,4 +233,25 @@ required_pull_request_reviews = {
 |------|-------------|
 | <a name="output_repository_name"></a> [repository\_name](#output\_repository\_name) | The name of the repository |
 | <a name="output_repository_url"></a> [repository\_url](#output\_repository\_url) | The URL of the repository |
+# MIT License
+
+## Copyright (c) [2024] Flufi LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included insa
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 <!-- END_TF_DOCS -->

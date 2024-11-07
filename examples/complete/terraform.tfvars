@@ -1,23 +1,16 @@
-archive_on_destroy = "false"
-
 description = "This is a test repository"
-
 environment = "sandbox"
-
 label_order = ["namespace", "stage", "name", "environment"]
+name        = "repository"
+namespace   = "flufi"
+stage       = "module"
 
-name = "repository"
-
-namespace = "flufi"
 
 required_deployment_environments = ["sandbox"]
-
-
-stage = "module"
-
-visibility                  = "public"
-status_checks_contexts      = ["terratest"]
-commit_author_email_pattern = "@flufi.io"
+archive_on_destroy               = "false"
+visibility                       = "public"
+status_checks_contexts           = ["terratest"]
+commit_author_email_pattern      = "@flufi.io"
 
 dependabot_environment = "sandbox"
 required_pull_request_reviews = {

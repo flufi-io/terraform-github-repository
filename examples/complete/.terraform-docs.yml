@@ -15,6 +15,7 @@ sections:
     - outputs
 
 content: |-
+  {{ .Header }}
   # How to use this module
   ```hcl
   # main.tf
@@ -24,12 +25,10 @@ content: |-
   # terraform.tfvars
   {{ include "terraform.tfvars" }}
   ```
-
   ```hcl
   # variables.tf
   {{ include "variables.tf" }}
   ```
-  {{ .Header }}
   {{ .Providers }}
   {{ .Inputs }}
   {{ .Outputs }}
@@ -37,6 +36,7 @@ content: |-
   {{ range .Module.Resources }}
   - {{ .GetMode }}.{{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
   {{- end }}
+  {{ .Footer }}
 
 output:
   file: README.md

@@ -15,6 +15,7 @@ sections:
   show: []
 
 content: |-
+  {{ .Header }}
   # Examples
   ## Complete
   ```hcl
@@ -31,6 +32,7 @@ content: |-
   {{ .Providers }}
   {{ .Inputs }}
   {{ .Outputs }}
+  {{ .Footer }}
 
 
 output:
