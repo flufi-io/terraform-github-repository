@@ -48,15 +48,6 @@ variable "required_pull_request_reviews" {
   })
   description = "Branch protection options to require PR reviews."
 }
-#variable "restrictions" {
-#  type = object({
-#    teams = optional(list(string))
-#    users = optional(list(string))
-#    apps  = optional(list(string))
-#  })
-#  default     = null
-#  description = "Branch protection,require restrictions (is only available for organization-owned repositories)."
-#}
 
 variable "required_deployment_environments" {
   default     = ["sandbox"]
@@ -68,15 +59,6 @@ variable "commit_author_email_pattern" {
   type        = string
   description = "The pattern that the author email of the commits must match to be accepted."
   default     = "@flufi.io"
-}
-
-variable "github_token" {
-  description = "Github Personal Access Token"
-  sensitive   = true
-  validation {
-    condition     = length(var.github_token) > 0
-    error_message = "The github_token variable must not be empty."
-  }
 }
 
 variable "dependabot_environment" {

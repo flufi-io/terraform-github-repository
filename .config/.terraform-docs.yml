@@ -15,11 +15,14 @@ sections:
   show: []
 
 content: |-
+  {{ .Header }}
   # Examples
   ## Complete
   ```hcl
   ## main.tf
   {{ include "examples/complete/main.tf" }}
+  ```
+  ```hcl
   ## terraform.tfvars
   {{ include "examples/complete/terraform.tfvars" }}
   ```
@@ -31,6 +34,7 @@ content: |-
   {{ .Providers }}
   {{ .Inputs }}
   {{ .Outputs }}
+  {{ .Footer }}
 
 
 output:
@@ -54,7 +58,7 @@ settings:
   color: true
   default: true
   description: true
-  escape: true
+  escape: false
   hide-empty: true
   html: true
   indent: 2
